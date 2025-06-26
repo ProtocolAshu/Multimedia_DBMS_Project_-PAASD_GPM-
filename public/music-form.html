@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Upload - The Multimedia Store</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nanum Myeongjo', serif;
+            background-color: #f4f4f4;
+        }
+
+        .jumbotron {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900' width='1600' height='900'%3E%3Crect width='1600' height='900' fill='%23693a7a'/%3E%3Cpath fill='%23ffffff' fill-opacity='0.1' d='M0 0L800 450L1600 0V900H0z'/%3E%3C/svg%3E");
+            color: floralwhite;
+            background-size: cover;
+        }
+
+        .navbar {
+            background-color: rgba(0,0,0,0.7);
+            font-family: 'Nanum Myeongjo', serif;
+        }
+
+        .navbar-brand, .navbar-nav .nav-link {
+            color: floralwhite !important;
+        }
+
+        .upload-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #6c757d;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            margin-top: 15px;
+            border-radius: 5px;
+        }
+
+        .btn-upload {
+            background-color: #8a2be2;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-upload:hover {
+            background-color: #7b1fa2;
+            transform: scale(1.05);
+        }
+
+        .audio-preview {
+            width: 100%;
+            margin-top: 15px;
+            border-radius: 5px;
+        }
+
+        .genre-tag {
+            display: inline-block;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            padding: 3px 8px;
+            background-color: #e2d1f9;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .tag-remove {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        .artist-input-group {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="index.html">THE MULTIMEDIA STORE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="music-list.html">Music List</a>
+                </li>
+                <li class="nav-item" id="loginNavItem">
+                    <a class="nav-link" href="login.html">Login</a>
+                </li>
+                <li class="nav-item" id="registerNavItem">
+                    <a class="nav-link" href="register.html">Register</a>
+                </li>
+                <li class="nav-item" id="logoutNavItem" style="display: none;">
+                    <a class="nav-link" href="#" onclick="logout()">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">About</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="jumbotron">
+        <br><br>
+        <div id="header">
+            <h1 class="display-3 text-center"><strong>THE MUSIC STORE</strong></h1>
+            <p class="lead text-center"><strong>Share your music with the world!</strong></p>
+        </div>
+    </div>
+
+    <!-- Music Upload Section -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="upload-section">
+                    <h2 class="text-center mb-4">Upload New Music</h2>
+                    <form id="musicForm">
+                        <!-- Basic Info -->
+                        <div class="form-group">
+                            <label for="musicTitle">Music Title</label>
+                            <input type="text" class="form-control" id="musicTitle" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="artistName">Artist Name</label>
+                            <input type="text" class="form-control" id="artistName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Featured Artists (optional)</label>
+                            <div id="featuredArtists">
+                                <!-- Will be populated by JS -->
+                            </div>
+                            <div class="input-group mt-2">
+                                <input type="text" class="form-control" id="newArtist" placeholder="Add featured artist">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="addArtist()">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="albumName">Album Name (optional)</label>
+                            <input type="text" class="form-control" id="albumName">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="releaseYear">Release Year</label>
+                            <input type="number" class="form-control" id="releaseYear" min="1900" max="2099" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="musicCover">Cover Image</label>
+                            <input type="file" class="form-control-file" id="musicCover" accept="image/*">
+                            <img id="cover-preview" class="preview-image" style="display:none;">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="musicFile">Music File</label>
+                            <input type="file" class="form-control-file" id="musicFile" accept="audio/*" required>
+                            <audio id="audio-preview" controls class="audio-preview" style="display:none;"></audio>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Genres</label>
+                            <div id="genreTags">
+                                <!-- Will be populated by JS -->
+                            </div>
+                            <div class="input-group mt-2">
+                                <input type="text" class="form-control" id="newGenre" placeholder="Add genre">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="addGenre()">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="musicDescription">Description</label>
+                            <textarea class="form-control" id="musicDescription" rows="4"></textarea>
+                        </div>
+                        
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="explicitContent">
+                            <label class="form-check-label" for="explicitContent">Contains explicit content</label>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-upload btn-block mt-4">Upload Music</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="upload-section">
+                    <h3 class="mb-3">Upload Guidelines</h3>
+                    <ul>
+                        <li>Provide accurate information about your music</li>
+                        <li>Upload high-quality audio files (MP3, WAV, FLAC)</li>
+                        <li>Cover image should be at least 1000x1000 pixels</li>
+                        <li>Add relevant genres to help listeners find your music</li>
+                        <li>Mark explicit content appropriately</li>
+                    </ul>
+                    
+                    <h4 class="mt-4">Supported Formats</h4>
+                    <ul>
+                        <li>Audio: MP3, WAV, FLAC, AAC</li>
+                        <li>Images: JPG, PNG, WebP</li>
+                    </ul>
+                </div>
+                
+                <div class="upload-section mt-4">
+                    <h3 class="mb-3">Preview</h3>
+                    <div id="music-preview" class="text-center">
+                        <img id="preview-cover" src="" class="preview-image mb-3" style="display:none;">
+                        <h4 id="preview-title">Music Title</h4>
+                        <p id="preview-artist">Artist Name</p>
+                        <audio id="preview-audio" controls class="audio-preview"></audio>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-5">
+        <div class="container">
+            <p>&copy; 2025 THE MULTIMEDIA STORE.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Check authentication status when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+        });
+
+        function checkAuth() {
+            // Get authentication data from localStorage
+            const token = localStorage.getItem('userToken');
+            
+            if (token) {
+                // User is logged in
+                // Hide login and register links
+                document.getElementById('loginNavItem').style.display = 'none';
+                document.getElementById('registerNavItem').style.display = 'none';
+                // Show logout link
+                document.getElementById('logoutNavItem').style.display = 'block';
+            } else {
+                // User is not logged in
+                // Show login and register links
+                document.getElementById('loginNavItem').style.display = 'block';
+                document.getElementById('registerNavItem').style.display = 'block';
+                // Hide logout link
+                document.getElementById('logoutNavItem').style.display = 'none';
+                // Redirect to login page since you need to be logged in to upload music
+                alert('You need to be logged in to upload music');
+                window.location.href = 'login.html';
+            }
+        }
+        
+        // Function to handle logout
+        function logout() {
+            // Clear user data from localStorage
+            localStorage.removeItem('userToken');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userRole');
+            
+            // Update navigation after logout
+            checkAuth();
+            
+            // Redirect to home page
+            window.location.href = 'index.html';
+        }
+            
+        // Image preview functionality
+        document.getElementById('musicCover').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const previewImage = document.getElementById('cover-preview');
+            const previewCover = document.getElementById('preview-cover');
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block';
+                    previewCover.src = e.target.result;
+                    previewCover.style.display = 'block';
+                    updatePreview();
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Audio preview functionality
+        document.getElementById('musicFile').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const previewAudio = document.getElementById('audio-preview');
+            const previewPlayer = document.getElementById('preview-audio');
+            
+            if (file) {
+                const url = URL.createObjectURL(file);
+                previewAudio.src = url;
+                previewAudio.style.display = 'block';
+                previewPlayer.src = url;
+                updatePreview();
+            }
+        });
+
+        // Add featured artist
+        function addArtist() {
+            const artistInput = document.getElementById('newArtist');
+            const artistName = artistInput.value.trim();
+            
+            if (artistName) {
+                const artistContainer = document.getElementById('featuredArtists');
+                const artistId = 'artist-' + Date.now();
+                
+                const artistElement = document.createElement('div');
+                artistElement.className = 'artist-input-group input-group';
+                artistElement.innerHTML = `
+                    <input type="text" class="form-control" value="${artistName}" readonly>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-danger" type="button" onclick="removeElement('${artistId}')">Remove</button>
+                    </div>
+                    <input type="hidden" name="featuredArtists" value="${artistName}">
+                `;
+                artistElement.id = artistId;
+                
+                artistContainer.appendChild(artistElement);
+                artistInput.value = '';
+                updatePreview();
+            }
+        }
+
+        // Add genre tag
+        function addGenre() {
+            const genreInput = document.getElementById('newGenre');
+            const genreName = genreInput.value.trim();
+            
+            if (genreName) {
+                const genreContainer = document.getElementById('genreTags');
+                const genreId = 'genre-' + Date.now();
+                
+                const genreElement = document.createElement('span');
+                genreElement.className = 'genre-tag';
+                genreElement.innerHTML = `
+                    ${genreName}
+                    <span class="tag-remove" onclick="removeElement('${genreId}')">×</span>
+                    <input type="hidden" name="genres" value="${genreName}">
+                `;
+                genreElement.id = genreId;
+                
+                genreContainer.appendChild(genreElement);
+                genreInput.value = '';
+                updatePreview();
+            }
+        }
+
+        // Remove element by ID
+        function removeElement(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.remove();
+                updatePreview();
+            }
+        }
+
+        // Update preview section
+        function updatePreview() {
+            document.getElementById('preview-title').textContent = 
+                document.getElementById('musicTitle').value || 'Music Title';
+                
+            document.getElementById('preview-artist').textContent = 
+                document.getElementById('artistName').value || 'Artist Name';
+        }
+
+        // Form submission handler
+        document.getElementById('musicForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Create music object to store in localStorage
+            const musicId = 'music-' + Date.now();
+            const title = document.getElementById('musicTitle').value;
+            const artist = document.getElementById('artistName').value;
+            const album = document.getElementById('albumName').value;
+            const year = document.getElementById('releaseYear').value;
+            const description = document.getElementById('musicDescription').value;
+            const explicit = document.getElementById('explicitContent').checked;
+            
+            // Get featured artists
+            const featuredArtists = [];
+            document.querySelectorAll('input[name="featuredArtists"]').forEach(input => {
+                featuredArtists.push(input.value);
+            });
+            
+            // Get genres
+            const genres = [];
+            document.querySelectorAll('input[name="genres"]').forEach(input => {
+                genres.push(input.value);
+            });
+            
+            // Get cover image
+            let coverImageUrl = '';
+            const coverFile = document.getElementById('musicCover').files[0];
+            if (coverFile) {
+                coverImageUrl = URL.createObjectURL(coverFile);
+            }
+            
+            // Get audio file
+            let audioUrl = '';
+            const audioFile = document.getElementById('musicFile').files[0];
+            if (audioFile) {
+                audioUrl = URL.createObjectURL(audioFile);
+            } else {
+                alert('Please select an audio file');
+                return;
+            }
+            
+            // Create music object
+            const musicItem = {
+                id: musicId,
+                title: title,
+                artist: artist,
+                featuredArtists: featuredArtists,
+                album: album,
+                year: year,
+                description: description,
+                explicit: explicit,
+                genres: genres.length > 0 ? genres : ['Uncategorized'],
+                coverImage: coverImageUrl || '/img/default-music.jpg',
+                audioFile: audioUrl,
+                dateAdded: new Date().toISOString()
+            };
+            
+            // Get existing music from localStorage or create empty array
+            let musicList = JSON.parse(localStorage.getItem('musicList')) || [];
+            
+            // Add new music item
+            musicList.push(musicItem);
+            
+            // Save to localStorage
+            localStorage.setItem('musicList', JSON.stringify(musicList));
+            
+            alert('Music uploaded successfully!');
+            window.location.href = 'music-list.html';
+        });
+
+        // Initialize form with some default values for better UX
+        document.getElementById('releaseYear').value = new Date().getFullYear();
+        
+        // Update preview on input changes
+        document.getElementById('musicTitle').addEventListener('input', updatePreview);
+        document.getElementById('artistName').addEventListener('input', updatePreview);
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

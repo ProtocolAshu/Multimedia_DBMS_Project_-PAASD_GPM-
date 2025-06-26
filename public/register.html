@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - The Multimedia Store</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="index.html">THE MULTIMEDIA STORE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto" id="navItems">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="login.html">Login</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="register.html">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">About me</a>
+                </li>
+                <li class="nav-item" id="logoutItem" style="display:none;">
+                    <a class="nav-link" href="#" onclick="logout()">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Registration Section -->
+    <div class="container mt-5" id="registerContainer">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h2>Register</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="registerError" class="alert alert-danger" style="display: none;"></div>
+                        <form id="registerForm">
+                            <div class="form-group">
+                                <label for="fullName">Full Name</label>
+                                <input type="text" class="form-control" id="fullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" required>
+                                <small class="form-text text-muted">Password must be at least 8 characters long.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirmPassword" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="role">Role</label>
+                                <select class="form-control" id="role" required>
+                                    <option value="client">Client/Customer</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="securityQuestion">Security Question (for password recovery)</label>
+                                <input type="text" class="form-control" id="securityQuestion" placeholder="Example: What was your first pet's name?" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="securityAnswer">Security Answer</label>
+                                <input type="text" class="form-control" id="securityAnswer" required>
+                            </div>
+                            <button type="submit" class="btn btn-warning btn-block">Register</button>
+                        </form>
+                        <div class="text-center mt-3">
+                            <p>Already have an account? <a href="login.html">Login here</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-5">
+        <div class="container">
+            <p>&copy; 2025 THE MULTIMEDIA STORE. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const fullName = document.getElementById('fullName').value;
+    const email = document.getElementById('email').value;
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const role = document.getElementById('role').value;
+    const securityQuestion = document.getElementById('securityQuestion').value;
+    const securityAnswer = document.getElementById('securityAnswer').value;
+    const errorElement = document.getElementById('registerError');
+    
+    // Clear previous error messages
+    errorElement.style.display = 'none';
+    
+    // Validate password length
+    if (password.length < 8) {
+        errorElement.textContent = 'Password must be at least 8 characters long.';
+        errorElement.style.display = 'block';
+        return;
+    }
+    
+    // Validate password match
+    if (password !== confirmPassword) {
+        errorElement.textContent = 'Passwords do not match.';
+        errorElement.style.display = 'block';
+        return;
+    }
+    
+    // Make API request to register user
+    fetch('/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+            fullName, 
+            email, 
+            username, 
+            password,
+            role,
+            securityQuestion,
+            securityAnswer
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message === 'User registered and logged in successfully') {
+            // Store user info in localStorage for session management
+            localStorage.setItem('userToken', data.user.id);
+            localStorage.setItem('userName', data.user.name || data.user.username);
+            localStorage.setItem('userRole', data.user.role); // Store user role
+            
+            // Show success message and redirect
+            alert('Registration successful! Redirecting to home page...');
+            window.location.href = 'index.html';
+        } else {
+            // Display any other errors from the server
+            errorElement.textContent = data.error || 'Registration failed. Please try again.';
+            errorElement.style.display = 'block';
+        }
+    })
+    .catch(error => {
+        // Handle errors
+        console.error('Error:', error);
+        errorElement.textContent = error.message || 'Registration failed. Please try again.';
+        errorElement.style.display = 'block';
+    });
+});
+
+// Check if user is logged in on page load
+window.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('userToken');
+    if (token) {
+        // User is logged in, redirect to home page
+        window.location.href = 'index.html';
+    }
+});
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

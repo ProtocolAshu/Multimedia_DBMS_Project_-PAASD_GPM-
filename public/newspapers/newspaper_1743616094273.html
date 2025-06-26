@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE HINDU - April 2, 2025 | The Multimedia Store</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Nanum Myeongjo', serif;
+        }
+.jumbotron {
+    background-image: url("https://images.unsplash.com/photo-1585241936939-be4099591252?q=80&w=2000&auto=format&fit=crop");
+    color: floralwhite;
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(0,0,0,0.7);
+    background-blend-mode: overlay;
+}
+        .newspaper-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .newspaper-cover {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #dee2e6;
+            margin-bottom: 20px;
+        }
+        .view-pdf-btn {
+            display: inline-block;
+            width: 200px;
+            margin: 20px 10px;
+            padding: 10px 20px;
+            background-color: #17a2b8;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .view-pdf-btn:hover {
+            background-color: #138496;
+            color: white;
+            text-decoration: none;
+        }
+        .download-btn {
+            display: inline-block;
+            width: 200px;
+            margin: 20px 10px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .download-btn:hover {
+            background-color: #218838;
+            color: white;
+            text-decoration: none;
+        }
+        .navbar {
+            background-color: rgba(0,0,0,0.7);
+            font-family: 'Nanum Myeongjo', serif;
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            color: floralwhite !important;
+        }
+        .edition-badge {
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: #6c757d;
+            color: white;
+            border-radius: 5px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .date-badge {
+            font-size: 1rem;
+            color: #6c757d;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="/index.html">THE NEWSPAPER STORE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/index.html">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/newspaper-list.html">Newspaper Archive</a>
+                </li>
+                <li class="nav-item" id="loginNavItem">
+                    <a class="nav-link" href="/login.html">Login</a>
+                </li>
+                <li class="nav-item" id="registerNavItem">
+                    <a class="nav-link" href="/register.html">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact.html">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about.html">About</a>
+                </li>
+                <li class="nav-item" id="logoutNavItem" style="display:none;">
+                    <a class="nav-link" href="#" onclick="logout()">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="jumbotron">
+        <div class="container text-center">
+            <h1 class="display-4">THE HINDU</h1>
+            <p class="lead">Historical Newspaper Archive</p>
+        </div>
+    </div>
+
+    <div class="container newspaper-container my-5">
+        <div class="text-center">
+            <span class="edition-badge">Morning Edition</span>
+            <span class="date-badge">April 2, 2025</span>
+            
+            <img src="/uploads/newspapers/1743616094103-759974701.png" class="newspaper-cover" alt="THE HINDU cover">
+            
+            <div class="button-group">
+                <a href="/uploads/newspapers/1743616094109-801644182.pdf" class="view-pdf-btn" target="_blank">
+                    <i class="fas fa-eye mr-2"></i>View Full PDF
+                </a>
+                <a href="/uploads/newspapers/1743616094109-801644182.pdf" class="download-btn" download="THE HINDU_April 2, 2025.pdf" onclick="return checkDownloadAuth(event)">
+                    <i class="fas fa-download mr-2"></i>Download PDF
+                </a>
+            </div>
+        </div>
+
+        
+            <div class="mb-4">
+                <h4>About This Edition</h4>
+                <p>As of April 2, 2025, The Hindu covers key developments across economic, legal, environmental, international, and sports sectors. Highlights include the Reserve Bank of India upgrading the GDP growth forecast, a Supreme Court ruling on data privacy, above-average monsoon predictions, strengthened India-Japan ties, and the Indian women's cricket team's victory over Australia.</p>
+            </div>
+        
+
+        
+            <div class="mb-3">
+                <h5>Keywords</h5>
+                <span class="badge badge-info mr-2">GDP growth</span><span class="badge badge-info mr-2">Reserve Bank of India</span><span class="badge badge-info mr-2">economic forecast</span><span class="badge badge-info mr-2">Data Protection Act</span><span class="badge badge-info mr-2">Supreme Court</span><span class="badge badge-info mr-2">data privacy</span><span class="badge badge-info mr-2">monsoon forecast</span><span class="badge badge-info mr-2">India Meteorological Department</span><span class="badge badge-info mr-2">India-Japan relations</span><span class="badge badge-info mr-2">trade agreements</span><span class="badge badge-info mr-2">technology cooperation</span><span class="badge badge-info mr-2">defense agreements</span><span class="badge badge-info mr-2">Indian women's cricket</span><span class="badge badge-info mr-2">Australia series win.</span>
+            </div>
+        
+
+        <hr class="my-4">
+
+        <div class="text-center mt-4">
+            <a href="newspaper-list.html" class="btn btn-outline-secondary">Back to Archive</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-5 py-4 bg-dark text-white">
+        <div class="container">
+            <p class="mb-0">&copy; 2025 THE MULTIMEDIA STORE. All rights reserved.</p>
+        </div>
+    </footer>
+
+     <script>
+    // Check authentication status when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        checkAuth();
+    });
+
+    function checkAuth() {
+        // Get authentication data from localStorage
+        const token = localStorage.getItem('userToken');
+        
+        if (token) {
+            // User is logged in
+            // Hide login and register links
+            document.getElementById('loginNavItem').style.display = 'none';
+            document.getElementById('registerNavItem').style.display = 'none';
+            // Show logout link
+            document.getElementById('logoutNavItem').style.display = 'block';
+        } else {
+            // User is not logged in
+            // Show login and register links
+            document.getElementById('loginNavItem').style.display = 'block';
+            document.getElementById('registerNavItem').style.display = 'block';
+            // Hide logout link
+            document.getElementById('logoutNavItem').style.display = 'none';
+        }
+    }
+        
+    // Function to handle logout
+    function logout() {
+        // Clear user data from localStorage
+        localStorage.removeItem('userToken');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userRole');
+        
+        // Update navigation after logout
+        checkAuth();
+        
+        // Redirect to home page
+        window.location.href = 'index.html';
+    }
+        
+    // Function to check if user is authorized to download
+    function checkDownloadAuth(event) {
+        // Get authentication data from localStorage
+        const token = localStorage.getItem('userToken');
+        
+        if (!token) {
+            // User is not logged in
+            event.preventDefault();
+            alert('Please log in to download this newspaper.');
+            // Redirect to login page after a short delay
+            setTimeout(function() {
+                window.location.href = 'login.html';
+            }, 1000);
+            return false;
+        }
+        return true;
+    }
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>
+    

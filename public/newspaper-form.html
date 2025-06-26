@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newspaper Upload - The Multimedia Store</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Playfair Display', serif;
+            background-color: #f8f9fa;
+        }
+
+        .jumbotron {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900' width='1600' height='900'%3E%3Crect width='1600' height='900' fill='%23343a40'/%3E%3Cpath fill='%23ffffff' fill-opacity='0.1' d='M0 0L800 450L1600 0V900H0z'/%3E%3C/svg%3E");
+            color: white;
+            background-size: cover;
+        }
+
+        .navbar {
+            background-color: rgba(0,0,0,0.7);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .navbar-brand, .navbar-nav .nav-link {
+            color: white !important;
+        }
+
+        .upload-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            margin-top: 15px;
+            border-radius: 5px;
+            border: 1px solid #dee2e6;
+            cursor: pointer;
+        }
+
+        .btn-upload {
+            background-color: #495057;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-upload:hover {
+            background-color: #343a40;
+            transform: scale(1.05);
+        }
+
+        .btn-add {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-add:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-remove {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .newspaper-entry {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+            position: relative;
+            background-color: #fff;
+        }
+
+        .entry-header {
+            cursor: move;
+            padding: 5px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            margin: -15px -15px 15px -15px;
+            border-radius: 5px 5px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-container {
+            border: 1px solid #dee2e6;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            background-color: white;
+        }
+
+        #newspaper-entries {
+            min-height: 50px;
+        }
+        
+        .entry-badge {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+        
+        .page-header {
+            border-bottom: 2px solid #343a40;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .newspaper-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            opacity: 0.7;
+        }
+        
+        .date-badge {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 0.9rem;
+            color: #495057;
+        }
+        
+        .pdf-preview {
+            height: 200px;
+            border: 1px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 15px;
+            cursor: pointer;
+            background-color: #f8f9fa;
+        }
+        
+        .pdf-preview:hover {
+            background-color: #e9ecef;
+        }
+
+        .alert {
+            display: none;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="index.html">THE MULTIMEDIA STORE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="newspaper-list.html">Newspaper Archive</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="login.html">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="register.html">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">About</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="jumbotron">
+        <br><br>
+        <div id="header">
+            <h1 class="display-3 text-center"><strong>THE MULTIMEDIA STORE</strong></h1>
+            <p class="lead text-center"><strong>Upload and catalog historical newspapers by name and date!</strong></p>
+        </div>
+    </div>
+
+    <!-- Newspaper Upload Section -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="upload-section">
+                    <div class="page-header d-flex align-items-center">
+                        <svg class="newspaper-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"></path>
+                            <path d="M18 14h-8"></path>
+                            <path d="M15 18h-5"></path>
+                            <path d="M10 6h8v4h-8z"></path>
+                        </svg>
+                        <h2 class="mb-0">Upload Historical Newspapers</h2>
+                    </div>
+                    
+                    <form id="newspaperForm">
+                        <!-- Success and error alerts -->
+                        <div class="alert alert-success" id="successAlert">
+                            Newspaper successfully uploaded to the archive!
+                        </div>
+                        <div class="alert alert-danger" id="errorAlert">
+                            Error uploading newspaper. Please try again.
+                        </div>
+                        
+                        <!-- Newspaper Collection Info -->
+                        <div class="form-group">
+                            <label for="newspaperName">Newspaper Name</label>
+                            <input type="text" class="form-control" id="newspaperName" placeholder="e.g. The Daily Chronicle, The Times" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="publishDate">Publication Date</label>
+                                <input type="date" class="form-control" id="publishDate" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="editionType">Edition Type</label>
+                                <select class="form-control" id="editionType">
+                                    <option value="morning">Morning Edition</option>
+                                    <option value="evening">Evening Edition</option>
+                                    <option value="special">Special Edition</option>
+                                    <option value="weekend">Weekend Edition</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="newspaperCover">Front Page Image (Preview)</label>
+                            <input type="file" class="form-control-file" id="newspaperCover" accept="image/*">
+                            <img id="cover-preview" class="preview-image" style="display:none;" onclick="openFilePreview('cover')">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="newspaperPdf">Complete Newspaper PDF</label>
+                            <input type="file" class="form-control-file" id="newspaperPdf" accept=".pdf" required>
+                            <div id="pdf-preview" class="pdf-preview" onclick="openFilePreview('pdf')" style="display: none;">
+                                <div class="text-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="#dc3545" viewBox="0 0 16 16">
+                                        <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
+                                    </svg>
+                                    <p class="mt-2 mb-0" id="pdf-filename">No PDF selected</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="archiveDescription">Archive Description</label>
+                            <textarea class="form-control" id="archiveDescription" rows="3" placeholder="Brief description about this newspaper edition, its historical significance, or notable contents"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="keywords">Keywords (comma separated)</label>
+                            <input type="text" class="form-control" id="keywords" placeholder="e.g. world war, election, sports, fashion">
+                        </div>
+                        
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" onclick="previewNewspaper()">Preview</button>
+                            <button type="submit" class="btn btn-upload px-4">Upload Newspaper to Archive</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="upload-section">
+                    <h3 class="mb-3">Upload Instructions</h3>
+                    <ul>
+                        <li>Enter the newspaper's name and publication date</li>
+                        <li>Upload a clear image of the front page for preview</li>
+                        <li>Upload the complete newspaper as a PDF file</li>
+                        <li>Click on the preview image to view the full PDF</li>
+                        <li>Include keywords for better searchability</li>
+                        <li>Click "Preview" to see how your entry will look</li>
+                    </ul>
+                    
+                </div>
+                
+                <div id="preview-container" class="preview-container" style="display:none;">
+                    <h3>Upload Preview</h3>
+                    <hr>
+                    <div id="newspaper-preview"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-5 py-4 bg-dark text-white">
+        <div class="container">
+            <p class="mb-0">&copy; 2025 THE MULTIMEDIA STORE. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+
+
+
+// Check authentication status when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+        checkAuth();
+    });
+
+    function checkAuth() {
+        // Get authentication data from localStorage
+        const token = localStorage.getItem('userToken');
+        
+        if (token) {
+            // User is logged in
+            // Hide login and register links
+            document.getElementById('loginNavItem').style.display = 'none';
+            document.getElementById('registerNavItem').style.display = 'none';
+            // Show logout link
+            document.getElementById('logoutNavItem').style.display = 'block';
+        } else {
+            // User is not logged in
+            // Show login and register links
+            document.getElementById('loginNavItem').style.display = 'block';
+            document.getElementById('registerNavItem').style.display = 'block';
+            // Hide logout link
+            document.getElementById('logoutNavItem').style.display = 'none';
+        }
+    }
+        
+    // Function to handle logout
+    function logout() {
+        // Clear user data from localStorage
+        localStorage.removeItem('userToken');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userRole');
+        
+        // Update navigation after logout
+        checkAuth();
+        
+        // Redirect to home page
+        window.location.href = 'index.html';
+    }
+        
+    // Add this function to show login message
+    function showLoginMessage(event) {
+        event.preventDefault();
+        alert('Please log in first to view book details.');
+        // Optionally redirect to login page after a short delay
+        setTimeout(function() {
+            window.location.href = 'login.html';
+        }, 1000);
+    }
+        // Front page image preview functionality
+        document.getElementById('newspaperCover').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const previewImage = document.getElementById('cover-preview');
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                previewImage.style.display = 'none';
+            }
+        });
+
+        // PDF file preview functionality
+        document.getElementById('newspaperPdf').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const pdfPreview = document.getElementById('pdf-preview');
+            const pdfFilename = document.getElementById('pdf-filename');
+            
+            if (file) {
+                pdfFilename.textContent = file.name;
+                pdfPreview.style.display = 'flex';
+            } else {
+                pdfPreview.style.display = 'none';
+            }
+        });
+        
+        // Function to open either PDF or Cover image preview
+        function openFilePreview(type) {
+            if (type === 'pdf') {
+                const pdfFile = document.getElementById('newspaperPdf').files[0];
+                if (pdfFile) {
+                    const pdfUrl = URL.createObjectURL(pdfFile);
+                    window.open(pdfUrl, '_blank');
+                } else {
+                    alert('Please upload a PDF file first');
+                }
+            } else if (type === 'cover') {
+                const coverFile = document.getElementById('newspaperCover').files[0];
+                if (coverFile) {
+                    const coverUrl = URL.createObjectURL(coverFile);
+                    window.open(coverUrl, '_blank');
+                } else {
+                    alert('No cover image to preview');
+                }
+            }
+        }
+        
+        // Preview newspaper function
+        function previewNewspaper() {
+            const previewContainer = document.getElementById('preview-container');
+            const previewDiv = document.getElementById('newspaper-preview');
+            const newspaperName = document.getElementById('newspaperName').value || 'Newspaper Name';
+            const publishDate = document.getElementById('publishDate').value;
+            const editionType = document.getElementById('editionType');
+            const editionLabel = editionType.options[editionType.selectedIndex].text;
+            const coverPreview = document.getElementById('cover-preview');
+            const coverImage = coverPreview.style.display !== 'none' ? coverPreview.src : '';
+            const archiveDescription = document.getElementById('archiveDescription').value || 'No description provided.';
+            const pdfFile = document.getElementById('newspaperPdf').files[0];
+            const hasPdf = pdfFile ? true : false;
+            
+            // Format the date
+            let formattedDate = "Date not specified";
+            if (publishDate) {
+                const date = new Date(publishDate);
+                formattedDate = date.toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+            }
+            
+            let previewHTML = `
+                <div class="text-center mb-4">
+                    <h2 class="font-weight-bold">${newspaperName}</h2>
+                    <div class="date-badge mb-2">${formattedDate} - ${editionLabel}</div>
+                    ${coverImage ? `<img src="${coverImage}" class="img-fluid mb-3 border" alt="Front Page" style="cursor:pointer;" onclick="openFilePreview('cover')">` : ''}
+                </div>
+                
+                <div class="mb-4">
+                    <h5>Archive Description</h5>
+                    <p>${archiveDescription}</p>
+                </div>
+                
+                <div class="mb-3">
+                    <h5>PDF Status</h5>
+                    <div class="alert ${hasPdf ? 'alert-success' : 'alert-danger'}" style="display:block;">
+                        ${hasPdf ? 'PDF file ready for upload: ' + pdfFile.name : 'No PDF file uploaded'}
+                    </div>
+                </div>
+                
+                <div class="text-muted mt-3 small">
+                    <strong>Keywords:</strong> ${document.getElementById('keywords').value || 'None provided'}
+                </div>
+            `;
+            
+            previewDiv.innerHTML = previewHTML;
+            previewContainer.style.display = 'block';
+            
+            // Scroll to preview
+            previewContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Form submission handler
+        document.getElementById('newspaperForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Hide any existing alerts
+            document.getElementById('successAlert').style.display = 'none';
+            document.getElementById('errorAlert').style.display = 'none';
+            
+            // Validate required fields
+            if (!document.getElementById('newspaperName').value) {
+                alert('Please enter a newspaper name');
+                return;
+            }
+            
+            if (!document.getElementById('publishDate').value) {
+                alert('Please select a publication date');
+                return;
+            }
+            
+            if (!document.getElementById('newspaperPdf').files[0]) {
+                alert('Please upload a PDF file of the newspaper');
+                return;
+            }
+            
+            // Create FormData object
+            const formData = new FormData();
+            
+            // Append newspaper info
+            formData.append('newspaperName', document.getElementById('newspaperName').value);
+            formData.append('publishDate', document.getElementById('publishDate').value);
+            formData.append('editionType', document.getElementById('editionType').value);
+            formData.append('archiveDescription', document.getElementById('archiveDescription').value);
+            formData.append('keywords', document.getElementById('keywords').value);
+            
+            // Append cover image if available
+            const coverFile = document.getElementById('newspaperCover').files[0];
+            if (coverFile) {
+                formData.append('frontPageImage', coverFile);
+            }
+            
+            // Append PDF file
+            const pdfFile = document.getElementById('newspaperPdf').files[0];
+            formData.append('newspaperPdf', pdfFile);
+            
+            // Show preview before sending (optional)
+            previewNewspaper();
+            
+            // Send data to server
+            fetch('/upload-newspaper', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Success message
+                    document.getElementById('successAlert').style.display = 'block';
+                    
+                    // Reset form after successful submission
+                    setTimeout(() => {
+                        document.getElementById('newspaperForm').reset();
+                        document.getElementById('cover-preview').style.display = 'none';
+                        document.getElementById('pdf-preview').style.display = 'none';
+                        document.getElementById('preview-container').style.display = 'none';
+                        
+                        // Redirect to list page after 2 seconds
+                        setTimeout(() => {
+                            window.location.href = 'newspaper-list.html';
+                        }, 2000);
+                    }, 1000);
+                    
+                    return { success: true };
+                } else if (response.redirected) {
+                    window.location.href = response.url;
+                    return null;
+                } else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                if (data && data.error) {
+                    document.getElementById('errorAlert').textContent = 'Upload failed: ' + data.error;
+                    document.getElementById('errorAlert').style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('errorAlert').textContent = 'Upload failed. Please try again.';
+                document.getElementById('errorAlert').style.display = 'block';
+            });
+        });
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

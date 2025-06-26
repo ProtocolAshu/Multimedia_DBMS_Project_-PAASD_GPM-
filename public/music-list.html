@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Collection - The Multimedia Store</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .jumbotron {
+            background-image: url("https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=2070&auto=format&fit=crop");
+            color: floralwhite;
+            background-size: cover;
+            background-position: center;
+            background-color: rgba(0,0,0,0.6);
+            background-blend-mode: overlay;
+        }
+        
+        #header {
+            font-family: 'Nanum Myeongjo', serif;
+        }
+
+        .container_img {
+            position: relative;
+            width: 100%;
+        }
+
+        .image {
+            opacity: 1;
+            display: block;
+            width: 100%;
+            height: auto;
+            transition: .5s ease;
+            backface-visibility: hidden;
+        }
+
+        .container_img:hover .image {
+            opacity: 0.8;
+            cursor: pointer;
+        }
+
+        img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .create-btn {
+            display: block;
+            width: 200px;
+            margin: 1.5rem auto 0;
+            padding: 10px 20px;
+            background-color: #8a2be2; /* Purple color */
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .create-btn:hover {
+            background-color: #7b1fa2;
+            color: white;
+            text-decoration: none;
+            transform: scale(1.05);
+        }
+
+        .navbar {
+            background-color: rgba(0,0,0,0.7);
+            font-family: 'Nanum Myeongjo', serif;
+        }
+
+        .navbar-brand, .navbar-nav .nav-link {
+            color: floralwhite !important;
+        }
+
+        .music-card {
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            border: none;
+            background-color: #f8f9fa;
+        }
+
+        .music-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .music-meta {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .music-description {
+            margin-top: 10px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .card-footer {
+            background-color: transparent;
+            border-top: 1px solid rgba(0,0,0,.125);
+        }
+
+        .genre-badge {
+            margin-right: 5px;
+            margin-bottom: 5px;
+            display: inline-block;
+            background-color: #e2d1f9;
+            color: #6a1b9a;
+        }
+
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            background-color: rgba(138, 43, 226, 0.8);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .container_img:hover .play-btn {
+            opacity: 1;
+        }
+
+        .explicit-badge {
+            background-color: #dc3545;
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 5px;
+            border-radius: 3px;
+            margin-left: 5px;
+        }
+
+        .search-container {
+            margin-bottom: 30px;
+        }
+
+        .filter-controls {
+            margin-bottom: 20px;
+        }
+
+        .audio-player {
+            width: 100%;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="index.html">THE MULTIMEDIA STORE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item" id="createMusicNav">
+                    <a class="nav-link" href="music-form.html">Upload Music</a>
+                </li>
+                <li class="nav-item auth-item" id="loginNav">
+                    <a class="nav-link" href="login.html">Login</a>
+                </li>
+                <li class="nav-item auth-item" id="registerNav">
+                    <a class="nav-link" href="register.html">Register</a>
+                </li>
+                <li class="nav-item" id="logoutItem" style="display: none;">
+                    <a class="nav-link" href="#" onclick="logout()">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">About</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="jumbotron">
+        <br><br>
+        <div id="header">
+            <h1 class="display-3 text-center"><strong>THE MUSIC STORE</strong></h1>
+            <p class="lead text-center"><strong>Discover and enjoy our growing collection of music</strong></p>
+            <a href="music-form.html" class="create-btn" id="createMusicBtn">UPLOAD MUSIC</a>
+        </div>
+    </div>
+
+    <div class="container">     
+        <!-- Search and Filter Section -->
+
+ <!--       
+        <div class="row search-container">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search music..." id="searchInput">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" onclick="filterMusic()">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <select class="form-control" id="genreFilter">
+                    <option value="">All Genres</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select class="form-control" id="yearFilter">
+                    <option value="">All Years</option>
+                </select>
+            </div>
+        </div>
+-->   
+        <!-- Sort Controls -->
+ <!--- 
+
+      <div class="row filter-controls">
+            <div class="col-12">
+                <div class="btn-group btn-group-sm float-right">
+                    <button type="button" class="btn btn-outline-secondary" onclick="sortMusic('date', 'desc')">
+                        <i class="fas fa-sort-numeric-down"></i> Newest
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary" onclick="sortMusic('date', 'asc')">
+                        <i class="fas fa-sort-numeric-up"></i> Oldest
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary" onclick="sortMusic('title', 'asc')">
+                        <i class="fas fa-sort-alpha-down"></i> A-Z
+                    </button>
+                </div>
+            </div>
+        </div>
+-->
+
+        <!-- Music List -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="music-list" class="row">
+                    <!-- Music items will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <br><br>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+                <li class="page-item border border-secondary">
+                    <a class="page-link text-secondary" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item border border-secondary active"><a class="page-link text-secondary" href="#">1</a></li>
+                <li class="page-item border border-secondary">
+                    <a class="page-link text-secondary" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <br><br>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-5">
+        <div class="container">
+            <p>&copy; 2025 THE MULTIMEDIA STORE.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Authentication functions
+        function checkLoginStatus() {
+            const token = localStorage.getItem('userToken');
+            const userRole = localStorage.getItem('userRole');
+            
+            if (token) {
+                document.getElementById('loginNav').style.display = 'none';
+                document.getElementById('registerNav').style.display = 'none';
+                document.getElementById('logoutItem').style.display = 'block';
+                
+                if (userRole === 'admin') {
+                    document.getElementById('createMusicNav').style.display = 'block';
+                    document.getElementById('createMusicBtn').style.display = 'block';
+                } else {
+                    document.getElementById('createMusicNav').style.display = 'none';
+                    document.getElementById('createMusicBtn').style.display = 'none';
+                }
+            } else {
+                document.getElementById('loginNav').style.display = 'block';
+                document.getElementById('registerNav').style.display = 'block';
+                document.getElementById('logoutItem').style.display = 'none';
+                document.getElementById('createMusicNav').style.display = 'none';
+                document.getElementById('createMusicBtn').style.display = 'none';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('userToken');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userRole');
+            checkLoginStatus();
+            alert('You have been logged out successfully');
+        }
+
+        function showLoginMessage(event) {
+            event.preventDefault();
+            alert('Please log in to listen to full tracks.');
+            setTimeout(function() {
+                window.location.href = 'login.html';
+            }, 1000);
+        }
+
+        // Music display functions
+        function displayMusic() {
+    // Instead of fetch('/music'), read from localStorage
+    const musicItems = JSON.parse(localStorage.getItem('musicList')) || [];
+    const musicList = document.getElementById('music-list');
+    musicList.innerHTML = '';
+    
+    if (musicItems.length === 0) {
+        musicList.innerHTML = '<div class="col-12 text-center"><p>No music found. Be the first to upload!</p></div>';
+        return;
+    }
+    
+    // Populate filters
+    populateFilters(musicItems);
+    
+    // Display music items
+    musicItems.forEach(item => {
+        const isLoggedIn = localStorage.getItem('userToken') ? true : false;
+        
+        const musicCard = document.createElement('div');
+        musicCard.className = 'col-md-6 col-lg-4 mb-4';
+        musicCard.innerHTML = `
+            <div class="card music-card">
+                <div class="container_img" ${!isLoggedIn ? 'onclick="showLoginMessage(event)"' : ''}>
+                    <img src="${item.coverImage || '/img/default-music.jpg'}" class="card-img-top image" alt="${item.title}">
+                    <div class="play-btn" ${isLoggedIn ? `onclick="playMusic('${item.id}')"` : ''}>
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        ${item.title}
+                        ${item.explicit ? '<span class="explicit-badge">EXPLICIT</span>' : ''}
+                    </h5>
+                    <div class="music-meta">
+                        By ${item.artist} | ${item.year}
+                        ${item.album ? ` | ${item.album}` : ''}
+                    </div>
+                    ${item.description ? `<p class="card-text music-description">${item.description}</p>` : ''}
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            ${item.genres.map(genre => 
+                                `<span class="badge badge-pill genre-badge">${genre}</span>`
+                            ).join('')}
+                        </div>
+                        <button class="btn btn-sm btn-outline-secondary" 
+                            ${isLoggedIn ? `onclick="playMusic('${item.id}')"` : 'onclick="showLoginMessage(event)"'}>
+                            <i class="fas fa-play"></i> Play
+                        </button>
+                    </div>
+                    <audio id="player-${item.id}" class="audio-player" controls style="display:none;">
+                        <source src="${item.audioFile}" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+        `;
+        
+        musicList.appendChild(musicCard);
+    });
+}
+
+        // Also update the playMusic function to work with the item ID instead of audioURL
+function playMusic(itemId) {
+    // Stop any currently playing audio
+    document.querySelectorAll('audio').forEach(audio => {
+        audio.pause();
+        audio.style.display = 'none';
+    });
+    
+    // Play the selected audio
+    const audioPlayer = document.getElementById(`player-${itemId}`);
+    if (audioPlayer) {
+        audioPlayer.style.display = 'block';
+        audioPlayer.play();
+    }
+}
+
+        function populateFilters(musicItems) {
+            const genreFilter = document.getElementById('genreFilter');
+            const yearFilter = document.getElementById('yearFilter');
+            
+            // Get all unique genres
+            const allGenres = new Set();
+            musicItems.forEach(item => {
+                item.genres.forEach(genre => allGenres.add(genre));
+            });
+            
+            // Add genre options
+            allGenres.forEach(genre => {
+                const option = document.createElement('option');
+                option.value = genre;
+                option.textContent = genre;
+                genreFilter.appendChild(option);
+            });
+            
+            // Get all unique years
+            const allYears = new Set(musicItems.map(item => item.year).sort((a, b) => b - a));
+            
+            // Add year options
+            allYears.forEach(year => {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearFilter.appendChild(option);
+            });
+        }
+
+        function filterMusic() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const genreFilter = document.getElementById('genreFilter').value;
+            const yearFilter = document.getElementById('yearFilter').value;
+            
+            const musicCards = document.querySelectorAll('.col-md-6.col-lg-4.mb-4');
+            
+            musicCards.forEach(card => {
+                const title = card.querySelector('.card-title').textContent.toLowerCase();
+                const artist = card.querySelector('.music-meta').textContent.toLowerCase();
+                const genres = Array.from(card.querySelectorAll('.genre-badge')).map(badge => badge.textContent.toLowerCase());
+                const year = card.querySelector('.music-meta').textContent.match(/\d{4}/)?.[0] || '';
+                
+                const matchesSearch = title.includes(searchTerm) || artist.includes(searchTerm);
+                const matchesGenre = genreFilter === '' || genres.includes(genreFilter.toLowerCase());
+                const matchesYear = yearFilter === '' || year === yearFilter;
+                
+                if (matchesSearch && matchesGenre && matchesYear) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function sortMusic(by, direction) {
+            // This would typically re-fetch sorted data from the server
+            alert(`Sorting by ${by} in ${direction} order - would fetch sorted data from server`);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            displayMusic();
+            
+            // Add event listeners for filter changes
+            document.getElementById('genreFilter').addEventListener('change', filterMusic);
+            document.getElementById('yearFilter').addEventListener('change', filterMusic);
+            document.getElementById('searchInput').addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    filterMusic();
+                }
+            });
+        });
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

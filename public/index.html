@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Multimedia Store</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Nanum Myeongjo', serif;
+            background-color: #f4f4f4;
+        }
+
+        .jumbotron {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900' width='1600' height='900'%3E%3Crect width='1600' height='900' fill='%23a0522d'/%3E%3Cpath fill='%23ffffff' fill-opacity='0.1' d='M0 0L800 450L1600 0V900H0z'/%3E%3C/svg%3E");
+            color: floralwhite;
+            background-size: cover;
+        }
+
+        /* Navigation Styles */
+        .navbar {
+            background-color: rgba(0,0,0,0.7);
+            font-family: 'Nanum Myeongjo', serif;
+        }
+
+        .navbar-brand, .navbar-nav .nav-link {
+            color: floralwhite !important;
+        }
+
+        /* Section Styles */
+        .section-title {
+            color: #ffc107;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Content Box Styles */
+        .content-box {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+            height: 350px;
+        }
+
+        .content-box:hover {
+            transform: scale(1.05);
+        }
+
+        .content-box img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #f8f9fa;
+            padding: 20px 0;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="index.html">THE MULTIMEDIA STORE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="login.html">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="register.html">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">About me</a>
+                </li>
+                <li class="nav-item" id="logoutNavItem" style="display:none;">
+                    <a class="nav-link" href="#" onclick="logout()">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <div id="home" class="jumbotron text-center">
+        <h1 class="display-4">THE MULTIMEDIA STORE</h1>
+        <p class="lead">Unlock the power of multimedia—innovation, quality, and creativity in one place!</p>
+    </div>
+
+    <!-- Categories Section -->
+    <div id="categories" class="container">
+        <h2 class="section-title">Our Store</h2>
+        <div class="row">
+            <!-- Books -->
+            <div class="col-md-3">
+                <a href="book-list.html" class="text-decoration-none">
+                    <div class="content-box">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" style="width:100%; height:200px;">
+                            <rect width="300" height="200" fill="#f0f0f0"/>
+                            <rect x="50" y="50" width="200" height="100" fill="#8B4513"/>
+                            <text x="150" y="110" text-anchor="middle" fill="white" font-size="24">Books</text>
+                            <line x1="50" y1="70" x2="250" y2="70" stroke="#D2691E" stroke-width="3"/>
+                            <line x1="50" y1="130" x2="250" y2="130" stroke="#D2691E" stroke-width="3"/>
+                        </svg>
+                        <h3 class="text-center mt-3 text-dark">Books</h3>
+                        <p class="text-center text-muted">Explore our vast collection of books</p>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Videos -->
+            <div class="col-md-3">
+                <a href="video-list.html" class="text-decoration-none">
+                    <div class="content-box">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" style="width:100%; height:200px;">
+                            <rect width="300" height="200" fill="#e6e6fa"/>
+                            <rect x="75" y="50" width="150" height="100" fill="#4682B4"/>
+                            <polygon points="125,80 125,120 175,100" fill="white"/>
+                            <text x="150" y="180" text-anchor="middle" fill="#333" font-size="18">Video Collection</text>
+                        </svg>
+                        <h3 class="text-center mt-3 text-dark">Videos</h3>
+                        <p class="text-center text-muted">Stream the latest movies and documentaries</p>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Games -->
+           <!-- <div class="col-md-3">
+                <a href="game-list.html" class="text-decoration-none">
+                    <div class="content-box">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" style="width:100%; height:200px;">
+                            <rect width="300" height="200" fill="#f0fff0"/>
+                            <rect x="100" y="70" width="100" height="60" fill="#2E8B57" rx="10" ry="10"/>
+                            <circle cx="120" cy="100" r="10" fill="white"/>
+                            <circle cx="180" cy="100" r="10" fill="white"/>
+                            <text x="150" y="180" text-anchor="middle" fill="#333" font-size="18">Game Zone</text>
+                        </svg>
+                        <h3 class="text-center mt-3 text-dark">Games</h3>
+                        <p class="text-center text-muted">Play exciting video games</p>
+                    </div>
+                </a>
+            </div>  -->
+            
+            <!-- Paintings -->
+            <div class="col-md-3">
+                <a href="painting-list.html" class="text-decoration-none">
+                    <div class="content-box">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" style="width:100%; height:200px;">
+                            <rect width="300" height="200" fill="#FFF0F5"/>
+                            <path d="M100,50 Q150,100 200,50" fill="none" stroke="#8B4513" stroke-width="4"/>
+                            <circle cx="150" cy="100" r="40" fill="#DEB887" opacity="0.7"/>
+                            <polygon points="120,80 180,80 150,130" fill="#CD853F"/>
+                            <text x="150" y="180" text-anchor="middle" fill="#333" font-size="18">Art Gallery</text>
+                        </svg>
+                        <h3 class="text-center mt-3 text-dark">Paintings</h3>
+                        <p class="text-center text-muted">Discover beautiful artworks</p>
+                    </div>
+                </a>
+            </div>
+
+
+            <!-- Article -->
+            <div class="col-md-3">
+                <a href="article-list.html" class="text-decoration-none">
+                    <div class="content-box">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" style="width:100%; height:200px;">
+                            <rect width="300" height="200" fill="#f0f8ff"/>
+                            <!-- Article paper background -->
+                            <rect x="70" y="40" width="160" height="130" fill="white" stroke="#333" stroke-width="1"/>
+                            <!-- Article heading lines -->
+                            <rect x="90" y="55" width="120" height="10" fill="#4169E1"/>
+                            <!-- Text lines -->
+                            <line x1="90" y1="80" x2="210" y2="80" stroke="#333" stroke-width="1"/>
+                            <line x1="90" y1="95" x2="210" y2="95" stroke="#333" stroke-width="1"/>
+                            <line x1="90" y1="110" x2="210" y2="110" stroke="#333" stroke-width="1"/>
+                            <line x1="90" y1="125" x2="210" y2="125" stroke="#333" stroke-width="1"/>
+                            <line x1="90" y1="140" x2="180" y2="140" stroke="#333" stroke-width="1"/>
+                            <!-- Magnifying glass for research/reading -->
+                            <circle cx="220" cy="150" r="20" fill="none" stroke="#FF8C00" stroke-width="3"/>
+                            <line x1="235" y1="165" x2="250" y2="180" stroke="#FF8C00" stroke-width="3"/>
+                            <text x="150" y="180" text-anchor="middle" fill="#333" font-size="18">Articles & News</text>
+                        </svg>
+                        <h3 class="text-center mt-3 text-dark">Articles & News</h3>
+                        <p class="text-center text-muted">Read Articles & Latest News</p>
+                    </div>
+                </a>
+            </div>
+
+
+            <!-- News-Paper -->
+            <div class="col-md-3">
+                <a href="newspaper-list.html" class="text-decoration-none">
+                    <div class="content-box">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" style="width:100%; height:200px;">
+                            <rect width="300" height="200" fill="#f5f5f5"/>
+                            <!-- Newspaper fold -->
+                            <polygon points="60,40 240,40 240,160 60,160" fill="white" stroke="#555" stroke-width="1"/>
+                            <polygon points="145,40 155,40 155,160 145,160" fill="#e0e0e0" stroke="#555" stroke-width="1"/>
+                            <!-- Newspaper title -->
+                            <rect x="75" y="50" width="55" height="15" fill="#222"/>
+                            <rect x="165" y="50" width="55" height="15" fill="#222"/>
+                            <!-- Headlines and columns -->
+                            <rect x="75" y="75" width="55" height="5" fill="#444"/>
+                            <rect x="75" y="85" width="55" height="5" fill="#777"/>
+                            <rect x="75" y="95" width="55" height="5" fill="#777"/>
+                            <rect x="75" y="105" width="55" height="5" fill="#777"/>
+                            <rect x="75" y="115" width="55" height="5" fill="#777"/>
+                            <!-- Second column -->
+                            <rect x="165" y="75" width="55" height="5" fill="#444"/>
+                            <rect x="165" y="85" width="55" height="5" fill="#777"/>
+                            <rect x="165" y="95" width="55" height="5" fill="#777"/>
+                            <rect x="165" y="105" width="55" height="5" fill="#777"/>
+                            <rect x="165" y="115" width="55" height="5" fill="#777"/>
+                            <!-- Images in the paper -->
+                            <rect x="75" y="130" width="25" height="20" fill="#999"/>
+                            <rect x="195" y="130" width="25" height="20" fill="#999"/>
+                            <text x="150" y="180" text-anchor="middle" fill="#333" font-size="18">Newspapers</text>
+                        </svg>
+                        <h3 class="text-center mt-3 text-dark">Newspapers</h3>
+                        <p class="text-center text-muted">Browse Digital Newspapers</p>
+                    </div>
+                </a>
+            </div>
+
+
+            <!-- Music -->
+        <div class="col-md-3">
+            <a href="music-list.html" class="text-decoration-none">
+                <div class="content-box">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" style="width:100%; height:200px;">
+                        <rect width="300" height="200" fill="#f0fff0"/>
+                        <!-- Music staff lines -->
+                        <line x1="50" y1="60" x2="250" y2="60" stroke="#333" stroke-width="1"/>
+                        <line x1="50" y1="80" x2="250" y2="80" stroke="#333" stroke-width="1"/>
+                        <line x1="50" y1="100" x2="250" y2="100" stroke="#333" stroke-width="1"/>
+                        <line x1="50" y1="120" x2="250" y2="120" stroke="#333" stroke-width="1"/>
+                        <!-- Musical notes -->
+                        <ellipse cx="100" cy="80" rx="10" ry="8" fill="#483D8B"/>
+                        <line x1="110" y1="80" x2="110" y2="40" stroke="#483D8B" stroke-width="2"/>
+                        <ellipse cx="160" cy="100" rx="10" ry="8" fill="#483D8B"/>
+                        <line x1="170" y1="100" x2="170" y2="60" stroke="#483D8B" stroke-width="2"/>
+                        <text x="150" y="180" text-anchor="middle" fill="#333" font-size="18">Music Library</text>
+                    </svg>
+                    <h3 class="text-center mt-3 text-dark">Music</h3>
+                    <p class="text-center text-muted">Listen to your favorite Music</p>
+                </div>
+            </a>
+        </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="container">
+            <p>&copy; 2025 THE MULTIMEDIA STORE.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Check session on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('userToken');
+            if (token) {
+                fetch('/check_session', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.logged_in) {
+                        // Hide login and register nav items
+                        document.querySelector('li:nth-child(2)').style.display = 'none'; // Login
+                        document.querySelector('li:nth-child(3)').style.display = 'none'; // Register
+                        
+                        // Show logout nav item
+                        document.getElementById('logoutNavItem').style.display = 'block';
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+    
+        function logout() {
+            fetch('/logout', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        localStorage.removeItem('userToken');
+                        localStorage.removeItem('userName');
+                        localStorage.removeItem('userRole');
+    
+                        // Show login and register nav items
+                        document.querySelector('li:nth-child(2)').style.display = 'block'; // Login
+                        document.querySelector('li:nth-child(3)').style.display = 'block'; // Register
+                        
+                        // Hide logout nav item
+                        document.getElementById('logoutNavItem').style.display = 'none';
+                        
+                        alert('Logged out successfully');
+                        window.location.href = 'index.html';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Logout failed');
+                });
+        }
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

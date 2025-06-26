@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List - The Multimedia Store</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/icons/font/flaticon.css">
+    <style type="text/css">
+        .jumbotron {
+            background-image: url("https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+            color: floralwhite;
+            background-size: cover;
+        }
+
+        #header {
+            font-family: 'Nanum Myeongjo', serif;
+        }
+
+        .container_img {
+            position: relative;
+            width: 100%;
+        }
+
+        .image {
+            opacity: 1;
+            display: block;
+            width: 100%;
+            height: auto;
+            transition: .5s ease;
+            backface-visibility: hidden;
+        }
+
+        .container_img:hover .image {
+            opacity: 0.5;
+            cursor: pointer;
+        }
+
+        img {
+            width: 200px;
+            min-height: 400px;
+            max-height: 400px;
+            object-fit: cover;
+        }
+
+        .read-btn {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .read-btn:hover {
+            background-color: #0056b3;
+            color: white;
+            text-decoration: none;
+        }
+
+        .navbar {
+            background-color: rgba(0,0,0,0.7);
+            font-family: 'Nanum Myeongjo', serif;
+        }
+
+        .navbar-brand, .navbar-nav .nav-link {
+            color: floralwhite !important;
+        }
+
+        .arrow {
+            position: absolute;
+            bottom: 1em;
+            right: 1em;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="index.html">THE MULTIMEDIA STORE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item" id="uploadBookItem" style="display: none;">
+                    <a class="nav-link" href="form.html">Upload Book</a>
+                </li>
+                <li class="nav-item" id="loginItem">
+                    <a class="nav-link" href="login.html">Login</a>
+                </li>
+                <li class="nav-item" id="registerItem">
+                    <a class="nav-link" href="register.html">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">About</a>
+                </li>
+                <li class="nav-item" id="logoutItem" style="display: none;">
+                    <a class="nav-link" href="#" onclick="logout()">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="jumbotron">
+        <br><br>
+        <div id="header">
+            <h1 class="display-3 text-center"><strong>THE BOOKS STORE</strong></h1>
+            <p class="lead text-center"><strong>Unlock the power of multimedia—innovation, quality, and creativity in one place!</strong></p>
+            <a href="form.html" class="read-btn" id="addBookBtn" style="display: none;">ADD BOOK</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="book-list" class="card-deck">
+                    <!-- Books will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+                <li class="page-item border border-warning">
+                    <a class="page-link text-warning" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item border border-warning active"><a class="page-link text-warning" href="#">1</a></li>
+                <li class="page-item border border-warning">
+                    <a class="page-link text-warning" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <br><br>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-5">
+        <div class="container">
+            <p>&copy; 2025 THE MULTIMEDIA STORE.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Function to check user authentication and role
+// Function to check user authentication and role
+function checkAuth() {
+    const token = localStorage.getItem('userToken');
+    const userRole = localStorage.getItem('userRole');
+    const userName = localStorage.getItem('userName');
+    
+    // Update nav items based on authentication status
+    if (token) {
+        // User is logged in - hide login and register, show logout
+        document.getElementById('loginItem').style.display = 'none';
+        document.getElementById('registerItem').style.display = 'none';
+        document.getElementById('logoutItem').style.display = 'block';
+        
+        // Show "Upload Book" link and "ADD BOOK" button only for admin
+        if (userRole === 'admin') {
+            // Admin can see the upload book link and button
+            document.getElementById('uploadBookItem').style.display = 'block';
+            document.getElementById('addBookBtn').style.display = 'block';
+        } else {
+            // Client/customer cannot see the upload book link and button
+            document.getElementById('uploadBookItem').style.display = 'none';
+            document.getElementById('addBookBtn').style.display = 'none';
+        }
+    } else {
+        // User is not logged in - show login and register, hide logout
+        document.getElementById('loginItem').style.display = 'block';
+        document.getElementById('registerItem').style.display = 'block';
+        document.getElementById('logoutItem').style.display = 'none';
+        document.getElementById('uploadBookItem').style.display = 'none';
+        document.getElementById('addBookBtn').style.display = 'none';
+    }
+}
+        
+        // Function to handle logout
+        function logout() {
+            // Clear user data from localStorage
+            localStorage.removeItem('userToken');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userRole');
+            
+            // Redirect to home page
+            window.location.href = 'index.html';
+        }
+        
+// Add this function to show login message
+function showLoginMessage(event) {
+    event.preventDefault();
+    alert('Please log in first to view book details.');
+    // Optionally redirect to login page after a short delay
+    setTimeout(function() {
+        window.location.href = 'login.html';
+    }, 1000);
+}
+
+// Fetch and display books
+function fetchBooks() {
+    fetch('/books')
+        .then(response => response.json())
+        .then(books => {
+            const bookList = document.getElementById('book-list');
+            bookList.innerHTML = ''; // Clear any existing content
+            
+            // Check if user is logged in
+            const isLoggedIn = localStorage.getItem('userToken') ? true : false;
+            
+            books.forEach(book => {
+                const bookCard = document.createElement('div');
+                bookCard.className = 'card';
+                
+                // Configure the image container to handle clicks based on login status
+                const imgClickHandler = isLoggedIn ? '' : 'onclick="showLoginMessage(event)"';
+                
+                // Configure the arrow link based on login status
+                const arrowLink = isLoggedIn 
+                    ? `<a href="${book.htmlLink}" class="badge badge-pill badge-warning float-right">
+                         <span class="flaticon-arrowsoutline"></span>
+                       </a>`
+                    : `<a href="#" onclick="showLoginMessage(event)" class="badge badge-pill badge-warning float-right">
+                         <span class="flaticon-arrowsoutline"></span>
+                       </a>`;
+                
+                bookCard.innerHTML = `
+                    <div class="container_img" ${imgClickHandler} style="${!isLoggedIn ? 'cursor: pointer;' : ''}">
+                        <img src="${book.bookImage}" class="card-img-top image" alt="${book.bookName}">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><i>${book.bookName}</i></h5>
+                        <p class="card-text"><i>${book.authorName}</i></p>
+                        <br>
+                        <div class="arrow">
+                            ${arrowLink}
+                        </div>
+                    </div>
+                `;
+                bookList.appendChild(bookCard);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching books:', error);
+        });
+}
+        
+        // Run these functions when the page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            fetchBooks();
+        });
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

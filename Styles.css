@@ -1,0 +1,56 @@
+/* Global Styles */
+body {
+    font-family: 'Playfair Display', serif;
+    background-color: #f4f4f4;
+}
+
+/* Navigation Styles */
+.navbar {
+    background-color: rgba(0,0,0,0.7);
+    font-family: 'Playfair Display', serif;
+}
+
+.navbar-brand, .navbar-nav .nav-link {
+    color: floralwhite !important;
+}
+
+.navbar .nav-item.active .nav-link {
+    color: #ffc107 !important;
+}
+
+/* Card Styles */
+.card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Button Styles */
+.btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #212529;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+    border-color: #d39e00;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #f8f9fa;
+    padding: 20px 0;
+    margin-top: 30px;
+}
+
+/* Form Styles */
+.form-control:focus {
+    border-color: #ffc107;
+    box-shadow: 0 0 0 0.2rem rgba(255,193,7,.25);
+}

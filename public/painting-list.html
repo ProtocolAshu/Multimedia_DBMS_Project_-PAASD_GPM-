@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painting Gallery - The Multimedia Store</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/icons/font/flaticon.css">
+    <style type="text/css">
+.jumbotron {
+    background-image: url("https://images.unsplash.com/photo-1577083288073-40892c0860a4?q=80&w=2000&auto=format&fit=crop");
+    color: floralwhite;
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(0,0,0,0.5);
+    background-blend-mode: overlay;
+    padding: 3rem 1rem;
+    margin-bottom: 2rem;
+    height: auto;
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+}
+
+        #header {
+            font-family: 'Nanum Myeongjo', serif;
+        }
+
+        .container_img {
+            position: relative;
+            width: 100%;
+        }
+
+        .image {
+            opacity: 1;
+            display: block;
+            width: 100%;
+            height: auto;
+            transition: .5s ease;
+            backface-visibility: hidden;
+        }
+
+        .container_img:hover .image {
+            opacity: 0.7;
+            cursor: pointer;
+        }
+
+        img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .gallery-btn {
+    display: block;
+    width: 200px;
+    margin: 1.5rem auto 0;
+    padding: 10px 20px;
+    background-color: #e83e8c;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.gallery-btn:hover {
+    background-color: #d6336c;
+    color: white;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.5);
+}
+
+        .navbar {
+            background-color: rgba(0,0,0,0.7);
+            font-family: 'Nanum Myeongjo', serif;
+        }
+
+        .navbar-brand, .navbar-nav .nav-link {
+            color: floralwhite !important;
+        }
+
+        .arrow {
+            position: absolute;
+            bottom: 1em;
+            right: 1em;
+        }
+
+        .card {
+            margin-bottom: 20px;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-body {
+            background-color: #f8f9fa;
+        }
+
+        .card-title {
+            font-weight: bold;
+        }
+
+        .badge {
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="index.html">THE MULTIMEDIA STORE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item" id="uploadPaintingNav">
+                    <a class="nav-link" href="painting-form.html">Upload Painting</a>
+                </li>
+                <!-- Auth items that change based on login status -->
+                <li class="nav-item auth-item" id="loginNav">
+                    <a class="nav-link" href="login.html">Login</a>
+                </li>
+                <li class="nav-item auth-item" id="registerNav">
+                    <a class="nav-link" href="register.html">Register</a>
+                </li>
+                <li class="nav-item" id="logoutItem" style="display: none;">
+                    <a class="nav-link" href="#" onclick="logout()">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">About</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="jumbotron">
+        <div id="header">
+            <h1 class="display-3 text-center"><strong>THE PAINTING STORE</strong></h1>
+            <p class="lead text-center"><strong>Explore the world's greatest paintings and artistic masterpieces!</strong></p>
+            <a href="painting-form.html" class="gallery-btn" id="addPaintingBtn">ADD PAINTING</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="my-4 text-center">Painting Gallery</h2>
+                <div id="painting-list" class="row">
+                    <!-- Paintings will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+                <li class="page-item border border-primary">
+                    <a class="page-link text-primary" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item border border-primary active"><a class="page-link text-primary" href="#">1</a></li>
+                <li class="page-item border border-primary">
+                    <a class="page-link text-primary" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <br><br>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-5">
+        <div class="container">
+            <p>&copy; 2025 THE MULTIMEDIA STORE.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Updated functions for proper authentication handling in painting-list.html
+
+// Function to check user authentication and role
+function checkLoginStatus() {
+    const token = localStorage.getItem('userToken');
+    const userRole = localStorage.getItem('userRole');
+    const userName = localStorage.getItem('userName');
+    
+    // Update nav items based on authentication status
+    if (token) {
+        // User is logged in - hide login and register, show logout
+        document.getElementById('loginNav').style.display = 'none';
+        document.getElementById('registerNav').style.display = 'none';
+        document.getElementById('logoutItem').style.display = 'block';
+        
+        // Show "Upload Painting" link and button only for admin
+        if (userRole === 'admin') {
+            // Admin can see the upload painting link and button
+            document.getElementById('uploadPaintingNav').style.display = 'block';
+            document.getElementById('addPaintingBtn').style.display = 'block';
+        } else {
+            // Client/customer cannot see the upload painting link and button
+            document.getElementById('uploadPaintingNav').style.display = 'none';
+            document.getElementById('addPaintingBtn').style.display = 'none';
+        }
+    } else {
+        // User is not logged in - show login and register, hide logout
+        document.getElementById('loginNav').style.display = 'block';
+        document.getElementById('registerNav').style.display = 'block';
+        document.getElementById('logoutItem').style.display = 'none';
+        document.getElementById('uploadPaintingNav').style.display = 'none';
+        document.getElementById('addPaintingBtn').style.display = 'none';
+    }
+}
+
+// Logout function
+function logout() {
+    // Clear user data from localStorage
+    localStorage.removeItem('userToken');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userRole');
+    
+    // Update UI
+    checkLoginStatus();
+    
+    // Show logout message
+    alert('You have been logged out successfully');
+    
+    // Optionally redirect to home page
+    // window.location.href = 'index.html';
+}
+
+// Function to show login message for restricted content
+function showLoginMessage(event) {
+    event.preventDefault();
+    alert('Please log in first to view painting details.');
+    // Optionally redirect to login page after a short delay
+    setTimeout(function() {
+        window.location.href = 'login.html';
+    }, 1000);
+}
+
+// Function to display paintings with login check
+function displayPaintings() {
+    // Fetch paintings from the server
+    fetch('/paintings')
+        .then(response => response.json())
+        .then(paintings => {
+            const paintingList = document.getElementById('painting-list');
+            paintingList.innerHTML = ''; // Clear existing content
+            
+            // Check if user is logged in
+            const isLoggedIn = localStorage.getItem('userToken') ? true : false;
+            
+            if (paintings.length === 0) {
+                paintingList.innerHTML = '<div class="col-12 text-center"><p>No paintings found. Be the first to add one!</p></div>';
+                return;
+            }
+            
+            paintings.forEach(painting => {
+                const colDiv = document.createElement('div');
+                colDiv.className = 'col-md-4';
+                
+                // Configure the arrow link based on login status
+                const arrowLink = isLoggedIn 
+                    ? `<a href="${painting.htmlLink}" class="badge badge-pill badge-primary float-right">
+                         <span class="flaticon-arrowsoutline"></span>
+                       </a>`
+                    : `<a href="#" onclick="showLoginMessage(event)" class="badge badge-pill badge-primary float-right">
+                         <span class="flaticon-arrowsoutline"></span>
+                       </a>`;
+                
+                const paintingCard = document.createElement('div');
+                paintingCard.className = 'card';
+                paintingCard.innerHTML = `
+                    <div class="container_img" ${!isLoggedIn ? 'onclick="showLoginMessage(event)"' : ''} style="${!isLoggedIn ? 'cursor: pointer;' : ''}">
+                        <img src="${painting.paintingImage}" class="card-img-top image" alt="${painting.paintingName}">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">${painting.paintingName}</h5>
+                        <p class="card-text">${painting.artistName}, ${painting.yearCreated || 'Unknown'}</p>
+                        <p class="card-text text-muted">${painting.artMovement || ''}</p>
+                        <div class="arrow">
+                            ${arrowLink}
+                        </div>
+                    </div>
+                `;
+                colDiv.appendChild(paintingCard);
+                paintingList.appendChild(colDiv);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching paintings:', error);
+            document.getElementById('painting-list').innerHTML = 
+                '<div class="col-12 text-center"><p>Error loading paintings. Please try again later.</p></div>';
+        });
+}
+
+// Add event listener when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    checkLoginStatus();
+    displayPaintings();
+});
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/icons/font/flaticon.css">
+    <title>Browsing page</title>
+    <style type="text/css">
+        .jumbotron {
+            background-image: url("https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+            color:floralwhite;
+            background-size: cover;
+        }
+        #advanced-form {
+            display: none;
+        }
+
+        #header {
+            font-family:'Nanum Myeongjo', serif;
+        }
+
+        .container_img {
+          position: relative;
+          width: 100%;
+        }
+
+        .image {
+          opacity: 1;
+          display: block;
+          width: 100%;
+          height: auto;
+          transition: .5s ease;
+          backface-visibility: hidden;
+        }
+
+        .container_img:hover .image {
+          opacity: 0.5;
+        }
+
+        iframe{
+          padding: 1em;
+        }
+
+        #iframe_container{
+          margin-top: 2em;
+          display: flex;
+          justify-content: center;
+        }
+
+         /* New CSS for Read Button */
+         .read-btn {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .read-btn:hover {
+            background-color: #0056b3;
+            color: white;
+            text-decoration: none;
+        }
+
+        .navbar {
+            background-color: rgba(0,0,0,0.7);
+            font-family: 'Nanum Myeongjo', serif;
+        }
+
+        .navbar-brand, .navbar-nav .nav-link {
+            color: floralwhite !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="/">THE MULTIMEDIA STORE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/index.html">Home</a>
+                </li>
+                <li class="nav-item" id="loginNavItem">
+                    <a class="nav-link" href="/login.html">Login</a>
+                </li>
+                <li class="nav-item" id="registerNavItem">
+                    <a class="nav-link" href="/register.html">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact.html">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about.html">About me</a>
+                </li>
+                <li class="nav-item" id="logoutNavItem" style="display:none;">
+                    <a class="nav-link" href="#" onclick="logout()">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="jumbotron">
+    <br><br>
+     <div id="header">
+      <h1 class=display-3 style="text-align:center;"><strong>THE MULTIMEDIA STORE</strong></h1>
+      <p class="lead" style="text-align:center;"><strong>Unlock the power of multimedia—innovation, quality, and creativity in one place!</strong></p>
+  </div>
+    </div>
+
+    <div class="container">
+    <div class="text-center">
+      <h3 class="my-5">Atomic Habits: An Easy & Proven Way to Build Good Habits & Break Bad Ones</h3>
+       
+      <img src="/uploads/1743613528144.jpg" class="rounded mb-5" alt="Atomic Habits: An Easy & Proven Way to Build Good Habits & Break Bad Ones Book Cover" usemap="#book_map">
+      <map id="book_map" name="book_map">
+        <area shape="poly" coords="300, 471, 360, 437, 382, 472, 383, 563, 370, 599, 296, 473" href="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Book_icon.svg/220px-Book_icon.svg.png" target="_blank" alt="Book Icon" title="Book Icon">
+      </map>
+      <a href="/uploads/1743613528159.pdf" class="read-btn" target="_blank">Read PDF</a>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Author</th>
+          <td>James Clear</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Birth/Death</th>
+          <td>1986 - (Still Alive as of 2025)</td>
+        </tr>
+        <tr>
+          <th scope="row">Language</th>
+          <td>English</td>
+        </tr>
+        <tr>
+          <th scope="row">Genre</th>
+          <td>Self-Help, Personal Development</td>
+        </tr>
+        <tr>
+          <th scope="row">Literary Movement</th>
+          <td>Contemporary Self-Improvement</td>
+        </tr>
+        <tr>
+          <th scope="row">Important Themes</th>
+          <td>The Power of Small Changes, The Habit Loop, Identity-Based Habits, The Four Laws of Behavior Change, Continuous Improvement, The Role of Environment</td>
+        </tr>
+        <tr>
+          <th scope="row">Key Characters</th>
+          <td>Since Atomic Habits is a non-fiction self-help book, it does not have traditional characters. However, James Clear shares real-life examples and stories of individuals who successfully changed their habits, including athletes, entrepreneurs, and everyday people.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Atomic Habits by James Clear is a practical guide that explains how small, incremental changes in daily habits can lead to remarkable personal and professional growth over time. The book argues that success is not the result of major life changes but rather the accumulation of tiny improvements—getting just 1% better each day. This idea is based on the principle of compound growth, where minor changes, when practiced consistently, yield significant long-term benefits.
+</p><p>
+</p><p>Clear introduces the Four Laws of Behavior Change as a framework for building good habits and breaking bad ones. These laws are: Make It Obvious, Make It Attractive, Make It Easy, and Make It Satisfying. By following these principles, individuals can create a system that encourages positive behavior and discourages negative habits. He also emphasizes the importance of habit stacking, which involves linking new habits to existing ones to make them easier to maintain.
+</p><p>
+</p><p>Another key concept in the book is identity-based habits, which suggests that lasting change occurs when individuals shift their mindset and start believing in a new version of themselves. Instead of focusing solely on goals (e.g., "I want to run a marathon"), Clear advises readers to focus on identity (e.g., "I am a runner"). By reinforcing habits that align with this identity, behavior change becomes more natural and sustainable.
+</p><p>
+</p><p>The book also explores how environment plays a crucial role in shaping habits. Clear explains that people often fail not because of a lack of motivation but because their environment does not support their desired behavior. By designing surroundings that make good habits easier and bad habits harder, individuals can set themselves up for success without relying on willpower alone.
+</p><p>
+</p><p>Throughout Atomic Habits, Clear provides real-life stories, scientific studies, and practical exercises to help readers implement these strategies in their lives. He discusses how habits shape businesses, personal productivity, and even mental well-being. The book also explains how tracking habits and creating accountability can make habit formation more effective.
+</p><p>
+</p><p>Ultimately, Atomic Habits is a powerful and actionable book that teaches readers how to harness the power of small habits to transform their lives. Whether one wants to improve health, career, relationships, or personal growth, the lessons in this book provide a clear roadmap to long-lasting success.</p>
+
+    <div id="iframe_container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/Tf95VJq2txQ?si=vQKN-_uRqe_rXppq" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+    <br>
+    <br>
+    </div>
+    </div>
+    <br><br><hr>
+    <div class="container">
+        <!-- Footer -->
+        <footer class="page-footer font-small pt-4">
+          <div class="container-fluid text-center text-md-left">
+            <div class="row justify-content-around">
+              <div class="col-md-6 mt-md-0 mt-3">
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright text-center py-3"><p>&copy; 2025 THE MULTIMEDIA STORE.</p></div>
+        </footer>
+    </div>
+
+    <script>
+
+    formData.append('bookLink', document.getElementById('bookLink').value);
+
+    // Check authentication status when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        checkAuth();
+    });
+
+    function checkAuth() {
+        // Get authentication data from localStorage
+        const token = localStorage.getItem('userToken');
+        
+        if (token) {
+            // User is logged in
+            // Hide login and register links
+            document.getElementById('loginNavItem').style.display = 'none';
+            document.getElementById('registerNavItem').style.display = 'none';
+            // Show logout link
+            document.getElementById('logoutNavItem').style.display = 'block';
+        } else {
+            // User is not logged in
+            // Show login and register links
+            document.getElementById('loginNavItem').style.display = 'block';
+            document.getElementById('registerNavItem').style.display = 'block';
+            // Hide logout link
+            document.getElementById('logoutNavItem').style.display = 'none';
+        }
+    }
+        
+    // Function to handle logout
+    function logout() {
+        // Clear user data from localStorage
+        localStorage.removeItem('userToken');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userRole');
+        
+        // Update navigation after logout
+        checkAuth();
+        
+        // Redirect to home page
+        window.location.href = 'index.html';
+    }
+        
+    // Add this function to show login message
+    function showLoginMessage(event) {
+        event.preventDefault();
+        alert('Please log in first to view book details.');
+        // Optionally redirect to login page after a short delay
+        setTimeout(function() {
+            window.location.href = 'login.html';
+        }, 1000);
+    }
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>
+    

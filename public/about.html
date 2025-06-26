@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="index.html">THE MULTIMEDIA STORE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item" id="loginItem">
+                    <a class="nav-link" href="login.html">Login</a>
+                </li>
+                <li class="nav-item" id="registerItem">
+                    <a class="nav-link" href="register.html">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Contact</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="about.html">About me</a>
+                </li>
+                <li class="nav-item" id="logoutItem" style="display: none;">
+                    <a class="nav-link" href="#" onclick="logout()">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- About Me Section -->
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h2>About Me</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="150" height="150">
+                                <circle cx="100" cy="100" r="100" fill="#ffc107"/>
+                                <text x="100" y="110" text-anchor="middle" font-size="48" fill="white">MM</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-5">
+        <div class="container">
+            <p>&copy; 2025 THE MULTIMEDIA STORE. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script>
+        // Function to check user authentication and role
+        function checkAuth() {
+            const token = localStorage.getItem('userToken');
+            const userRole = localStorage.getItem('userRole');
+            
+            // Update nav items based on authentication status
+            if (token) {
+                // User is logged in - hide login and register, show logout
+                document.getElementById('loginItem').style.display = 'none';
+                document.getElementById('registerItem').style.display = 'none';
+                document.getElementById('logoutItem').style.display = 'block';
+                
+                // Show "Upload Book" link only for admin
+                if (userRole === 'admin') {
+                    document.getElementById('uploadBookItem').style.display = 'block';
+                } else {
+                    document.getElementById('uploadBookItem').style.display = 'none';
+                }
+            } else {
+                // User is not logged in - show login and register, hide logout
+                document.getElementById('loginItem').style.display = 'block';
+                document.getElementById('registerItem').style.display = 'block';
+                document.getElementById('logoutItem').style.display = 'none';
+                document.getElementById('uploadBookItem').style.display = 'none';
+            }
+        }
+        
+        // Function to handle logout
+        function logout() {
+            // Clear user data from localStorage
+            localStorage.removeItem('userToken');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userRole');
+            
+            // Redirect to home page
+            window.location.href = 'index.html';
+        }
+        
+        // Run this function when the page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+        });
+    </script>
+</body>
+</html>

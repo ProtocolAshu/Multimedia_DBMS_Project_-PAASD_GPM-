@@ -1,0 +1,314 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/icons/font/flaticon.css">
+    <title>Mona Lisa - The Multimedia Store</title>
+    <style type="text/css">
+.jumbotron {
+    background-image: url("https://images.unsplash.com/photo-1577083288073-40892c0860a4?q=80&w=2000&auto=format&fit=crop");
+    color: floralwhite;
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(0,0,0,0.5);
+    background-blend-mode: overlay;
+    padding: 3rem 1rem;
+    margin-bottom: 2rem;
+    height: auto;
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+}
+
+        #header {
+            font-family:'Nanum Myeongjo', serif;
+        }
+
+        body {
+            font-family: 'Nanum Myeongjo', serif;
+        }
+
+        .painting-container {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .painting-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .info-table {
+            margin-top: 30px;
+        }
+
+        .video-container {
+            margin-top: 40px;
+        }
+
+        iframe {
+            border-radius: 8px;
+        }
+
+        .gallery-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .gallery-btn:hover {
+            background-color: #2980b9;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #27ae60;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-left: 10px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .download-btn:hover {
+            background-color: #219251;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .navbar {
+            background-color: rgba(0,0,0,0.7);
+            font-family: 'Nanum Myeongjo', serif;
+        }
+
+        .navbar-brand, .navbar-nav .nav-link {
+            color: floralwhite !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="/index">THE PAINTING STORE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/index.html">Home</a>
+                </li>
+                <li class="nav-item" id="loginNavItem">
+                    <a class="nav-link" href="/login.html">Login</a>
+                </li>
+                <li class="nav-item" id="registerNavItem">
+                    <a class="nav-link" href="/register.html">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact.html">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about.html">About me</a>
+                </li>
+                <li class="nav-item" id="logoutNavItem" style="display:none;">
+                    <a class="nav-link" href="#" onclick="logout()">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="jumbotron">
+    <br><br>
+     <div id="header">
+      <h1 class=display-3 style="text-align:center;"><strong>THE PAINTING STORE</strong></h1>
+      <p class="lead" style="text-align:center;"><strong>Unlock the power of multimedia—innovation, quality, and creativity in one place!</strong></p>
+     </div>
+    </div>
+
+    <div class="container">
+        <div class="painting-container my-5">
+            <div class="row">
+                <div class="col-md-8 mb-4">
+                    <h2 class="mb-4 text-center">Mona Lisa</h2>
+                    <div class="text-center">
+                        <img src="/uploads/1743614502216.avif" alt="Mona Lisa" class="painting-img">
+                        <div class="mt-3">
+                            
+                            <a href="/uploads/1743614502216.avif" download="Mona Lisa" class="download-btn" onclick="return checkDownloadAuth(event)">
+                                <i class="flaticon-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h4 class="mb-3">About the Painting</h4>
+                    <table class="table info-table">
+                        <tbody>
+                            <tr>
+                                <th>Artist</th>
+                                <td>Leonardo da Vinci</td>
+                            </tr>
+                            <tr>
+                                <th>Year</th>
+                                <td>1503–1506 (possibly worked on until 1517)</td>
+                            </tr>
+                            <tr>
+                                <th>Medium</th>
+                                <td>Oil on a poplar wood panel</td>
+                            </tr>
+                            <tr>
+                                <th>Dimensions</th>
+                                <td>77 cm × 53 cm (30 in × 21 in)</td>
+                            </tr>
+                            <tr>
+                                <th>Art Movement</th>
+                                <td>High Renaissance</td>
+                            </tr>
+                            <tr>
+                                <th>Current Location</th>
+                                <td>Louvre Museum, Paris, France</td>
+                            </tr>
+                            <tr>
+                                <th>Technique</th>
+                                <td>Sfumato, Chiaroscuro, Atmospheric Perspective, Glazing</td>
+                            </tr>
+                            <tr>
+                                <th>Main Subject</th>
+                                <td>The portrait of a woman, believed to be Lisa Gherardini, the wife of Florentine merchant Francesco del Giocondo.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12">
+                    <h4 class="mb-3">Description</h4>
+                    <p>The Mona Lisa is one of the most famous and enigmatic portraits in art history. The painting features a woman with an enigmatic smile, seated against a dreamlike landscape. Her gaze appears to follow the viewer, and her subtle expression adds to the mystery of her identity and emotions. The soft transitions of light and shadow enhance the naturalistic depiction of her face and hands. The background consists of winding rivers, distant mountains, and a misty atmosphere, demonstrating Leonardo's mastery of perspective. The painting’s subtle details, delicate brushwork, and the sitter’s intriguing expression have made it an iconic masterpiece of Renaissance art.</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    
+        <div class="video-container mb-5">
+            <h4 class="mb-3">About This Painting</h4>
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/T9JvUDrrXmY?si=pM0Ak01tCIsmhlJH" allowfullscreen></iframe>
+            </div>
+        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Footer -->
+        <footer class="page-footer font-small pt-4">
+          <div class="container-fluid text-center text-md-left">
+            <div class="row justify-content-around">
+              <div class="col-md-6 mt-md-0 mt-3">
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright text-center py-3"><p>&copy; 2025 THE MULTIMEDIA STORE.</p></div>
+        </footer>
+    </div>
+
+
+     <script>
+    // Check authentication status when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        checkAuth();
+    });
+
+    function checkAuth() {
+        // Get authentication data from localStorage
+        const token = localStorage.getItem('userToken');
+        
+        if (token) {
+            // User is logged in
+            // Hide login and register links
+            document.getElementById('loginNavItem').style.display = 'none';
+            document.getElementById('registerNavItem').style.display = 'none';
+            // Show logout link
+            document.getElementById('logoutNavItem').style.display = 'block';
+        } else {
+            // User is not logged in
+            // Show login and register links
+            document.getElementById('loginNavItem').style.display = 'block';
+            document.getElementById('registerNavItem').style.display = 'block';
+            // Hide logout link
+            document.getElementById('logoutNavItem').style.display = 'none';
+        }
+    }
+        
+    // Function to handle logout
+    function logout() {
+        // Clear user data from localStorage
+        localStorage.removeItem('userToken');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userRole');
+        
+        // Update navigation after logout
+        checkAuth();
+        
+        // Redirect to home page
+        window.location.href = 'index.html';
+    }
+        
+    // Add this function to show login message
+    function showLoginMessage(event) {
+        event.preventDefault();
+        alert('Please log in first to view painting details.');
+        // Optionally redirect to login page after a short delay
+        setTimeout(function() {
+            window.location.href = 'login.html';
+        }, 1000);
+    }
+    
+    // Function to check if user is authorized to download
+    function checkDownloadAuth(event) {
+        // Get authentication data from localStorage
+        const token = localStorage.getItem('userToken');
+        
+        if (!token) {
+            // User is not logged in
+            event.preventDefault();
+            alert('Please log in to download this painting.');
+            // Redirect to login page after a short delay
+            setTimeout(function() {
+                window.location.href = 'login.html';
+            }, 1000);
+            return false;
+        }
+        return true;
+    }
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

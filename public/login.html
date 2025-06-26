@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - The Multimedia Store</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Nanum Myeongjo', serif;
+            background-color: #f4f4f4;
+        }
+
+        /* Navigation Styles */
+        .navbar {
+            background-color: rgba(0,0,0,0.7);
+            font-family: 'Nanum Myeongjo', serif;
+        }
+
+        .navbar-brand, .navbar-nav .nav-link {
+            color: floralwhite !important;
+        }
+
+        /* Card Styles */
+        .card {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+
+        .card-header {
+            background-color: #ffc107;
+            color: #333;
+        }
+
+        /* Button Styles */
+        .btn-warning {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #333;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+            border-color: #e0a800;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #f8f9fa;
+            padding: 20px 0;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="index.html">THE MULTIMEDIA STORE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto" id="navItems">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="login.html">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="register.html">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">About me</a>
+                </li>
+                <li class="nav-item" id="logoutItem" style="display:none;">
+                    <a class="nav-link" href="#" onclick="logout()">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Login Section -->
+    <div class="container mt-5" id="loginContainer">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <!-- Login Card -->
+                <div class="card" id="loginCard">
+                    <div class="card-header text-center">
+                        <h2>Login</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="loginError" class="alert alert-danger" style="display: none;"></div>
+                        <form id="loginForm">
+                            <div class="form-group">
+                                <label for="identifier">Email or Username</label>
+                                <input type="text" class="form-control" id="identifier" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" required>
+                            </div>
+                            <button type="submit" class="btn btn-warning btn-block">Login</button>
+                        </form>
+                        <div class="text-center mt-3">
+                            <p>Don't have an account? <a href="register.html">Register here</a></p>
+                            <p><a href="#" id="forgotPasswordLink">Forgot Password?</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Forgot Password Card (Hidden by default) -->
+                <div class="card" id="forgotPasswordCard" style="display: none;">
+                    <div class="card-header text-center">
+                        <h2>Reset Password</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="forgotPasswordMessage" class="alert" style="display: none;"></div>
+                        
+                        <!-- Step 1: Identify User Form -->
+                        <form id="identifyUserForm">
+                            <div class="form-group">
+                                <label for="resetEmail">Email Address</label>
+                                <input type="email" class="form-control" id="resetEmail" required>
+                            </div>
+                            <button type="submit" class="btn btn-warning btn-block">Continue</button>
+                        </form>
+
+                        <!-- Step 2: Security Question Form (Initially hidden) -->
+                        <form id="securityQuestionForm" style="display: none;">
+                            <div class="form-group">
+                                <label id="securityQuestionLabel">Security Question</label>
+                                <input type="text" class="form-control" id="securityAnswer" required>
+                                <small class="form-text text-muted">Answer the security question you provided during registration.</small>
+                            </div>
+                            <button type="submit" class="btn btn-warning btn-block">Verify</button>
+                        </form>
+
+                        <!-- Step 3: New Password Form (Initially hidden) -->
+                        <form id="newPasswordForm" style="display: none;">
+                            <div class="form-group">
+                                <label for="newPassword">New Password</label>
+                                <input type="password" class="form-control" id="newPassword" required>
+                                <small class="form-text text-muted">Password must be at least 8 characters long.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm New Password</label>
+                                <input type="password" class="form-control" id="confirmPassword" required>
+                            </div>
+                            <button type="submit" class="btn btn-warning btn-block">Reset Password</button>
+                        </form>
+
+                        <div class="text-center mt-3">
+                            <p><a href="#" id="backToLoginLink">Back to Login</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-5">
+        <div class="container">
+            <p>&copy; 2025 THE MULTIMEDIA STORE. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Check if user is already logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('userToken');
+            if (token) {
+                // Verify token with server
+                fetch('/check_session', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.logged_in) {
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+        });
+    
+        // Login Form Submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+    
+            const identifier = document.getElementById('identifier').value;
+            const password = document.getElementById('password').value;
+            const errorElement = document.getElementById('loginError');
+    
+            // Clear previous error messages
+            errorElement.style.display = 'none';
+    
+            // Make API request to login
+            fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ identifier, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Store user info in localStorage for session management
+                    localStorage.setItem('userToken', data.token);
+                    localStorage.setItem('userName', data.user.name || data.user.username);
+                    localStorage.setItem('userRole', data.user.role); // Store the user role
+                    
+                    // Show success message and redirect
+                    alert('Login successful! Redirecting to home page...');
+                    window.location.href = 'index.html';
+                } else {
+                    // Display error from the server
+                    errorElement.textContent = data.error || 'Login failed. Please check your credentials.';
+                    errorElement.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                // Handle errors
+                console.error('Error:', error);
+                errorElement.textContent = 'Login failed. Please try again.';
+                errorElement.style.display = 'block';
+            });
+        });
+    
+        // Show Forgot Password Form
+        document.getElementById('forgotPasswordLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('loginCard').style.display = 'none';
+            document.getElementById('forgotPasswordCard').style.display = 'block';
+        });
+    
+        // Back to Login
+        document.getElementById('backToLoginLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('forgotPasswordCard').style.display = 'none';
+            document.getElementById('loginCard').style.display = 'block';
+    
+            // Reset all forms and messages
+            document.getElementById('identifyUserForm').style.display = 'block';
+            document.getElementById('securityQuestionForm').style.display = 'none';
+            document.getElementById('newPasswordForm').style.display = 'none';
+            document.getElementById('forgotPasswordMessage').style.display = 'none';
+    
+            // Clear all inputs
+            document.getElementById('resetEmail').value = '';
+            document.getElementById('securityAnswer').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+        });
+    
+        // Step 1: Identify User
+        document.getElementById('identifyUserForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+    
+            const email = document.getElementById('resetEmail').value;
+            const messageElement = document.getElementById('forgotPasswordMessage');
+    
+            messageElement.className = 'alert';
+            messageElement.style.display = 'none';
+    
+            fetch('/api/forgot-password/verify-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('identifyUserForm').style.display = 'none';
+                    document.getElementById('securityQuestionForm').style.display = 'block';
+    
+                    document.getElementById('securityQuestionLabel').textContent = data.securityQuestion;
+                    sessionStorage.setItem('resetUserId', data.userId);
+    
+                    messageElement.className = 'alert alert-info';
+                    messageElement.textContent = 'Please answer your security question.';
+                    messageElement.style.display = 'block';
+                } else {
+                    messageElement.className = 'alert alert-danger';
+                    messageElement.textContent = data.error || 'Email not found. Please check and try again.';
+                    messageElement.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                messageElement.className = 'alert alert-danger';
+                messageElement.textContent = 'An error occurred. Please try again later.';
+                messageElement.style.display = 'block';
+            });
+        });
+    
+        // Step 2: Verify Security Question
+        document.getElementById('securityQuestionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+    
+            const userId = sessionStorage.getItem('resetUserId');
+            const securityAnswer = document.getElementById('securityAnswer').value;
+            const messageElement = document.getElementById('forgotPasswordMessage');
+    
+            messageElement.style.display = 'none';
+    
+            fetch('/api/forgot-password/verify-security', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId, securityAnswer })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('securityQuestionForm').style.display = 'none';
+                    document.getElementById('newPasswordForm').style.display = 'block';
+    
+                    messageElement.className = 'alert alert-info';
+                    messageElement.textContent = 'Please enter your new password.';
+                    messageElement.style.display = 'block';
+                } else {
+                    messageElement.className = 'alert alert-danger';
+                    messageElement.textContent = data.error || 'Incorrect answer. Please try again.';
+                    messageElement.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                messageElement.className = 'alert alert-danger';
+                messageElement.textContent = 'An error occurred. Please try again later.';
+                messageElement.style.display = 'block';
+            });
+        });
+    
+        // Step 3: Set New Password
+        document.getElementById('newPasswordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+    
+            const userId = sessionStorage.getItem('resetUserId');
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const messageElement = document.getElementById('forgotPasswordMessage');
+    
+            messageElement.style.display = 'none';
+    
+            if (newPassword.length < 8) {
+                messageElement.className = 'alert alert-danger';
+                messageElement.textContent = 'Password must be at least 8 characters long.';
+                messageElement.style.display = 'block';
+                return;
+            }
+    
+            if (newPassword !== confirmPassword) {
+                messageElement.className = 'alert alert-danger';
+                messageElement.textContent = 'Passwords do not match.';
+                messageElement.style.display = 'block';
+                return;
+            }
+    
+            fetch('/api/forgot-password/reset', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId, newPassword })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    messageElement.className = 'alert alert-success';
+                    messageElement.textContent = 'Password reset successful! You can now login with your new password.';
+                    messageElement.style.display = 'block';
+    
+                    sessionStorage.removeItem('resetUserId');
+    
+                    setTimeout(function() {
+                        document.getElementById('backToLoginLink').click();
+                    }, 3000);
+                } else {
+                    messageElement.className = 'alert alert-danger';
+                    messageElement.textContent = data.error || 'Password reset failed. Please try again.';
+                    messageElement.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                messageElement.className = 'alert alert-danger';
+                messageElement.textContent = 'An error occurred. Please try again later.';
+                messageElement.style.display = 'block';
+            });
+        });
+    
+        // Logout function
+        function logout() {
+            localStorage.removeItem('userToken');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userRole');
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>
