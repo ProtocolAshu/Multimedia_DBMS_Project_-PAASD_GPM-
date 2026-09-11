@@ -21,6 +21,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="index.html">Home</a>
                 </li>
+                <li class="nav-item" id="uploadBookItem" style="display: none;">
+                    <a class="nav-link" href="form.html">Upload Book</a>
+                </li>
                 <li class="nav-item" id="loginItem">
                     <a class="nav-link" href="login.html">Login</a>
                 </li>
@@ -127,21 +130,36 @@
         // Handle contact form submission
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const subject = document.getElementById('subject').value;
             const message = document.getElementById('message').value;
-            
+
             // Basic client-side validation
             if (name.trim() === '' || email.trim() === '' || subject.trim() === '' || message.trim() === '') {
                 alert('Please fill in all fields');
                 return;
             }
-            
-            // In a real application, you would send this to a server
-            alert('Message sent successfully!');
-            this.reset();
+
+            fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, subject, message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Message sent successfully!');
+                    document.getElementById('contactForm').reset();
+                } else {
+                    alert(data.error || 'Failed to send message. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to send message. Please try again.');
+            });
         });
         
         // Run this function when the page loads

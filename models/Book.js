@@ -16,6 +16,7 @@ const Book = sequelize.define('Book', {
         allowNull: false
     },
     bookImage: DataTypes.STRING,
+    bookPdf: DataTypes.STRING,
     birthYear: DataTypes.STRING,
     deathYear: DataTypes.STRING,
     language: DataTypes.STRING,

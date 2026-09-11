@@ -15,42 +15,44 @@ const Music = sequelize.define('Music', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    coverImage: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    releaseYear: {
-        type: DataTypes.STRING
-    },
-    genre: {
-        type: DataTypes.STRING
+    featuredArtists: {
+        type: DataTypes.JSON,
+        defaultValue: []
     },
     album: {
         type: DataTypes.STRING
     },
-    explicit: {
-        type: DataTypes.STRING
-    },
-    featuredArtists: {
-        type: DataTypes.STRING
-    },
-    keyFeatures: {
-        type: DataTypes.TEXT
-    },
-    description: {
-        type: DataTypes.TEXT,
+    year: {
+        type: DataTypes.INTEGER,
         allowNull: false
+    },
+    coverImage: {
+        type: DataTypes.STRING
     },
     audioFile: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING,
         allowNull: false
     },
-    musicLink: {
-        type: DataTypes.STRING
+    genres: {
+        type: DataTypes.JSON,
+        defaultValue: []
     },
-    streamingLink: {
+    description: {
+        type: DataTypes.TEXT
+    },
+    explicit: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
+    dateAdded: {
+        type: DataTypes.DATE
+    },
+    htmlLink: {
         type: DataTypes.STRING
     }
+}, {
+    tableName: 'Music',
+    timestamps: false
 });
 
 module.exports = Music;

@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Python virtual environment (not part of the Node app)
+venv/
+
+# Logs
+server.log
+*.log
+
+# Temporary commit message file
+commit-message.txt
+
+# OS cruft
+.DS_Store
+Thumbs.db

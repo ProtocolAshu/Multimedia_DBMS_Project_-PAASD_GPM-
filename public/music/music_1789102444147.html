@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Song - The Multimedia Store</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Nanum Myeongjo', serif;
+            background-color: #f8f9fa;
+        }
+        .jumbotron {
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("/img/default-music.jpg");
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+        .music-player-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .genre-badge {
+            background-color: #e2d1f9;
+            color: #6a1b9a;
+            margin-right: 5px;
+        }
+        .music-cover {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 5px;
+        }
+        .download-btn {
+            background-color: #28a745;
+            color: white;
+            border-radius: 5px;
+            padding: 8px 20px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+        }
+        .download-btn:hover {
+            background-color: #218838;
+            color: white;
+            text-decoration: none;
+        }
+        .player-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">THE MULTIMEDIA STORE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/index.html">Home</a>
+                </li>
+                <li class="nav-item" id="loginNavItem">
+                    <a class="nav-link" href="/login.html">Login</a>
+                </li>
+                <li class="nav-item" id="registerNavItem">
+                    <a class="nav-link" href="/register.html">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact.html">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about.html">About</a>
+                </li>
+                <li class="nav-item" id="logoutNavItem" style="display:none;">
+                    <a class="nav-link" href="#" onclick="logout()">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="jumbotron text-center">
+        <div class="container">
+            <h1 class="display-4">Test Song </h1>
+            <p class="lead">By Test Artist</p>
+            
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <img src="/img/default-music.jpg" alt="Test Song Cover" class="img-fluid music-cover mb-4">
+                <div class="mb-3"><span class="badge badge-pill genre-badge">Test</span></div>
+            </div>
+            <div class="col-md-8">
+                <div class="music-player-container">
+                    <h3>Test Song</h3>
+                    <p class="text-muted">Test Artist • 2026</p>
+                    
+                    
+                    <div class="mt-4 player-controls">
+                        <audio controls class="w-100">
+                            <source src="/uploads/1789102444146.mp3" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                        
+                        <a href="/uploads/1789102444146.mp3" download="Test Artist - Test Song.mp3" class="download-btn" onclick="return checkDownloadAuth(event)">
+                            <i class="fas fa-download mr-2"></i>Download MP3
+                        </a>
+                    </div>
+                    
+                    <div class="mt-4"><p>Test</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <p>&copy; 2025 THE MULTIMEDIA STORE. All rights reserved.</p>
+    </footer>
+
+    <script>
+    // Check authentication status when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        checkAuth();
+    });
+
+    function checkAuth() {
+        // Get authentication data from localStorage
+        const token = localStorage.getItem('userToken');
+        
+        if (token) {
+            // User is logged in
+            // Hide login and register links
+            document.getElementById('loginNavItem').style.display = 'none';
+            document.getElementById('registerNavItem').style.display = 'none';
+            // Show logout link
+            document.getElementById('logoutNavItem').style.display = 'block';
+        } else {
+            // User is not logged in
+            // Show login and register links
+            document.getElementById('loginNavItem').style.display = 'block';
+            document.getElementById('registerNavItem').style.display = 'block';
+            // Hide logout link
+            document.getElementById('logoutNavItem').style.display = 'none';
+        }
+    }
+        
+    // Function to handle logout
+    function logout() {
+        // Clear user data from localStorage
+        localStorage.removeItem('userToken');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userRole');
+        
+        // Update navigation after logout
+        checkAuth();
+        
+        // Redirect to home page
+        window.location.href = 'index.html';
+    }
+        
+    // Function to check if user is authorized to download
+    function checkDownloadAuth(event) {
+        // Get authentication data from localStorage
+        const token = localStorage.getItem('userToken');
+        
+        if (!token) {
+            // User is not logged in
+            event.preventDefault();
+            alert('Please log in to download this audio file.');
+            // Redirect to login page after a short delay
+            setTimeout(function() {
+                window.location.href = 'login.html';
+            }, 1000);
+            return false;
+        }
+        return true;
+    }
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>
+    

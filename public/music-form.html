@@ -396,72 +396,71 @@
         // Form submission handler
         document.getElementById('musicForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            
-            // Create music object to store in localStorage
-            const musicId = 'music-' + Date.now();
+
             const title = document.getElementById('musicTitle').value;
             const artist = document.getElementById('artistName').value;
             const album = document.getElementById('albumName').value;
             const year = document.getElementById('releaseYear').value;
             const description = document.getElementById('musicDescription').value;
             const explicit = document.getElementById('explicitContent').checked;
-            
+
             // Get featured artists
             const featuredArtists = [];
             document.querySelectorAll('input[name="featuredArtists"]').forEach(input => {
                 featuredArtists.push(input.value);
             });
-            
+
             // Get genres
             const genres = [];
             document.querySelectorAll('input[name="genres"]').forEach(input => {
                 genres.push(input.value);
             });
-            
-            // Get cover image
-            let coverImageUrl = '';
+
+            // Get uploaded files
             const coverFile = document.getElementById('musicCover').files[0];
-            if (coverFile) {
-                coverImageUrl = URL.createObjectURL(coverFile);
-            }
-            
-            // Get audio file
-            let audioUrl = '';
             const audioFile = document.getElementById('musicFile').files[0];
-            if (audioFile) {
-                audioUrl = URL.createObjectURL(audioFile);
-            } else {
+            if (!audioFile) {
                 alert('Please select an audio file');
                 return;
             }
-            
-            // Create music object
-            const musicItem = {
-                id: musicId,
-                title: title,
-                artist: artist,
-                featuredArtists: featuredArtists,
-                album: album,
-                year: year,
-                description: description,
-                explicit: explicit,
-                genres: genres.length > 0 ? genres : ['Uncategorized'],
-                coverImage: coverImageUrl || '/img/default-music.jpg',
-                audioFile: audioUrl,
-                dateAdded: new Date().toISOString()
-            };
-            
-            // Get existing music from localStorage or create empty array
-            let musicList = JSON.parse(localStorage.getItem('musicList')) || [];
-            
-            // Add new music item
-            musicList.push(musicItem);
-            
-            // Save to localStorage
-            localStorage.setItem('musicList', JSON.stringify(musicList));
-            
-            alert('Music uploaded successfully!');
-            window.location.href = 'music-list.html';
+
+            // Build multipart form data for the server
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('artist', artist);
+            formData.append('featuredArtists', JSON.stringify(featuredArtists));
+            formData.append('album', album);
+            formData.append('year', year);
+            formData.append('genres', JSON.stringify(genres.length > 0 ? genres : ['Uncategorized']));
+            formData.append('description', description);
+            formData.append('explicit', explicit ? 'true' : 'false');
+            if (coverFile) {
+                formData.append('coverImage', coverFile);
+            }
+            formData.append('audioFile', audioFile);
+
+            fetch('/upload-music', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Upload failed');
+                }
+                return response.text();
+            })
+            .then(htmlContent => {
+                alert('Music uploaded successfully!');
+                // Open the generated music page in a new window
+                const newWindow = window.open('', '_blank');
+                newWindow.document.write(htmlContent);
+                newWindow.document.close();
+                window.location.href = 'music-list.html';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Music upload failed');
+            });
         });
 
         // Initialize form with some default values for better UX

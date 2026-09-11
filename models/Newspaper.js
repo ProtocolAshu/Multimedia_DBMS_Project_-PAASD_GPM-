@@ -47,6 +47,10 @@ const Newspaper = sequelize.define('Newspaper', {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW
+    },
+    htmlLink: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 }, {
     timestamps: false

@@ -15,27 +15,46 @@ const Game = require('./models/Game');
 const Article = require('./models/Article');
 const Newspaper = require('./models/Newspaper');
 const Music = require('./models/music');
-
-
-sequelize.sync()
-    .then(() => console.log('Database and tables created!'))
-    .catch(err => console.error('Unable to create tables: ', err));
-
-const app = express();
-const port = 3000;
+const ContactMessage = require('./models/ContactMessage');
 
 // Database connection and model synchronization
 sequelize.sync()
-    .then(() => console.log('Database and tables created!'))
+    .then(async () => {
+        console.log('Database and tables created!');
+        // Migrations: older database.sqlite files lack columns that the
+        // models and upload routes expect (values were silently dropped)
+        const migrations = [
+            { table: 'Music', column: 'htmlLink', ddl: "ALTER TABLE Music ADD COLUMN htmlLink VARCHAR(255)" },
+            { table: 'books', column: 'bookPdf', ddl: "ALTER TABLE books ADD COLUMN bookPdf VARCHAR(255)" },
+            { table: 'Newspapers', column: 'htmlLink', ddl: "ALTER TABLE Newspapers ADD COLUMN htmlLink VARCHAR(255)" }
+        ];
+        for (const { table, column, ddl } of migrations) {
+            try {
+                const columns = await sequelize.getQueryInterface().describeTable(table);
+                if (!columns[column]) {
+                    await sequelize.query(ddl);
+                    console.log(`Added ${table}.${column} column`);
+                }
+            } catch (err) {
+                // Table was just created by sync() with the column already present
+            }
+        }
+    })
     .catch(err => console.error('Unable to create tables: ', err));
+
+const app = express();
+const port = process.env.PORT || 3000;
 
 // Middleware setup
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Static file serving
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// redirect: false prevents /books, /videos, etc. (which exist as public/
+// subdirectories) from being 301-redirected to a trailing slash before the
+// JSON API routes below can handle them.
+app.use(express.static(path.join(__dirname, 'public'), { redirect: false }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), { redirect: false }));
 
 // Multer storage configuration
 const storage = multer.diskStorage({
@@ -107,7 +126,7 @@ app.post('/register', async (req, res) => {
 
 // Add these dependencies at the top of server.js
 const jwt = require('jsonwebtoken');
-const SECRET_KEY = 'Pass'; // Replace with a secure key in production
+const SECRET_KEY = process.env.JWT_SECRET || 'Pass'; // Set JWT_SECRET in production
 
 // Login endpoint
 app.post('/api/login', async (req, res) => {
@@ -251,6 +270,30 @@ app.get('/check_session', (req, res) => {
 app.post('/logout', (req, res) => {
     // Since we're using JWT, logout is handled client-side by removing the token
     res.json({ success: true, message: 'Logged out successfully' });
+});
+
+// Contact form endpoint
+app.post('/api/contact', async (req, res) => {
+    try {
+        const { name, email, subject, message } = req.body;
+
+        if (!name || !email || !subject || !message) {
+            return res.status(400).json({ success: false, error: 'All fields are required' });
+        }
+
+        await ContactMessage.create({
+            id: Date.now().toString(),
+            name: name.trim(),
+            email: email.trim(),
+            subject: subject.trim(),
+            message: message.trim()
+        });
+
+        res.status(201).json({ success: true, message: 'Message sent successfully' });
+    } catch (error) {
+        console.error('Contact form error:', error);
+        res.status(500).json({ success: false, error: 'Failed to send message. Please try again.' });
+    }
 });
 
 
@@ -537,21 +580,6 @@ app.get('/games/:id', async (req, res) => {
     }
 });
 
-
-// Route to get a specific video by ID
-app.get('/videos/:id', async (req, res) => {
-    try {
-        const video = await Video.findByPk(req.params.id);
-        if (video) {
-            res.json(video);
-        } else {
-            res.status(404).json({ error: 'Video not found' });
-        }
-    } catch (error) {
-        console.error('Error fetching video:', error);
-        res.status(500).json({ error: 'Unable to fetch video' });
-    }
-});
 
 // Book page generation function
 function generateBookPage(data) {
@@ -914,11 +942,14 @@ function generateVideoPage(data) {
                 <li class="nav-item">
                     <a class="nav-link" href="/video-list.html">Videos</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" id="loginNavItem">
                     <a class="nav-link" href="/login.html">Login</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" id="registerNavItem">
                     <a class="nav-link" href="/register.html">Register</a>
+                </li>
+                <li class="nav-item" id="logoutNavItem" style="display: none;">
+                    <a class="nav-link" href="#" onclick="logout()">Logout</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/contact.html">Contact</a>
@@ -1167,11 +1198,14 @@ function generateGamePage(data) {
                 <li class="nav-item">
                     <a class="nav-link" href="/game-list.html">Games</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" id="loginNavItem">
                     <a class="nav-link" href="/login.html">Login</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" id="registerNavItem">
                     <a class="nav-link" href="/register.html">Register</a>
+                </li>
+                <li class="nav-item" id="logoutNavItem" style="display: none;">
+                    <a class="nav-link" href="#" onclick="logout()">Logout</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/contact.html">Contact</a>
@@ -1948,11 +1982,14 @@ function generateArticlePage(article, blocks) {
                 <li class="nav-item">
                     <a class="nav-link" href="/article-list.html">Article List</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" id="loginNavItem">
                     <a class="nav-link" href="/login.html">Login</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" id="registerNavItem">
                     <a class="nav-link" href="/register.html">Register</a>
+                </li>
+                <li class="nav-item" id="logoutNavItem" style="display: none;">
+                    <a class="nav-link" href="#" onclick="logout()">Logout</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/contact.html">Contact</a>
@@ -2736,11 +2773,11 @@ app.get('/newspapers/filter', async (req, res) => {
         let whereClause = {};
         
         if (year) {
-            whereClause.publishDate = {
-                [Op.and]: [
-                    sequelize.where(sequelize.fn('YEAR', sequelize.col('publishDate')), year)
-                ]
-            };
+            // SQLite has no YEAR() function; use strftime to extract the year
+            whereClause.publishDate = sequelize.where(
+                sequelize.fn('strftime', '%Y', sequelize.col('publishDate')),
+                year
+            );
         }
         
         if (edition) {
@@ -2774,17 +2811,12 @@ app.get('/newspapers/:id', async (req, res) => {
     }
 });
 
-// Route to serve generated newspaper HTML pages
-app.get('/newspapers/:filename', (req, res) => {
-    const filePath = path.join(__dirname, 'public', 'newspapers', req.params.filename);
-    res.sendFile(filePath);
-});
-
 // Explicitly serve HTML pages with correct Content-Type
+// (fallback for any page not already served by the static middleware above)
 app.get('/:page.html', (req, res) => {
     const page = req.params.page;
     const filePath = path.join(__dirname, 'public', `${page}.html`);
-    
+
     // Check if the file exists
     if (fs.existsSync(filePath)) {
         res.setHeader('Content-Type', 'text/html');
@@ -2792,20 +2824,6 @@ app.get('/:page.html', (req, res) => {
     } else {
         res.status(404).send('Page not found');
     }
-});
-
-// Configure multer for multiple file uploads
-const articleUpload = multer({ 
-    storage: storage,  
-    limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
-});
-
-// Serve static pages (keep existing implementation)
-const staticPages = ['index', 'login', 'register', 'contact', 'about', 'form','newspaper-form', 'newspaper-list', 'aeticle-form.html' , 'article-list.html', 'book-list.html', 'game-form.html', 'game-list.html', 'newspaper-form.html', 'newspaper-list.html', 'painting-form.html', 'painting-list.html', 'video-list.html', 'videos-form.html'];
-staticPages.forEach(page => {
-    app.get(`/${page}.html`, (req, res) => {
-        res.sendFile(path.join(__dirname, 'public', `${page}.html`));
-    });
 });
 
 // Root route

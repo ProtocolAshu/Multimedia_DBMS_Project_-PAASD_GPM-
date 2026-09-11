@@ -333,65 +333,81 @@
 
         // Music display functions
         function displayMusic() {
-    // Instead of fetch('/music'), read from localStorage
-    const musicItems = JSON.parse(localStorage.getItem('musicList')) || [];
-    const musicList = document.getElementById('music-list');
-    musicList.innerHTML = '';
-    
-    if (musicItems.length === 0) {
-        musicList.innerHTML = '<div class="col-12 text-center"><p>No music found. Be the first to upload!</p></div>';
-        return;
-    }
-    
-    // Populate filters
-    populateFilters(musicItems);
-    
-    // Display music items
-    musicItems.forEach(item => {
-        const isLoggedIn = localStorage.getItem('userToken') ? true : false;
-        
-        const musicCard = document.createElement('div');
-        musicCard.className = 'col-md-6 col-lg-4 mb-4';
-        musicCard.innerHTML = `
-            <div class="card music-card">
-                <div class="container_img" ${!isLoggedIn ? 'onclick="showLoginMessage(event)"' : ''}>
-                    <img src="${item.coverImage || '/img/default-music.jpg'}" class="card-img-top image" alt="${item.title}">
-                    <div class="play-btn" ${isLoggedIn ? `onclick="playMusic('${item.id}')"` : ''}>
-                        <i class="fas fa-play"></i>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">
-                        ${item.title}
-                        ${item.explicit ? '<span class="explicit-badge">EXPLICIT</span>' : ''}
-                    </h5>
-                    <div class="music-meta">
-                        By ${item.artist} | ${item.year}
-                        ${item.album ? ` | ${item.album}` : ''}
-                    </div>
-                    ${item.description ? `<p class="card-text music-description">${item.description}</p>` : ''}
-                </div>
-                <div class="card-footer">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            ${item.genres.map(genre => 
-                                `<span class="badge badge-pill genre-badge">${genre}</span>`
-                            ).join('')}
+    // Fetch music from the server API
+    fetch('/music')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch music');
+            }
+            return response.json();
+        })
+        .then(musicItems => {
+            const musicList = document.getElementById('music-list');
+            musicList.innerHTML = '';
+
+            if (musicItems.length === 0) {
+                musicList.innerHTML = '<div class="col-12 text-center"><p>No music found. Be the first to upload!</p></div>';
+                return;
+            }
+
+            // Populate filters
+            populateFilters(musicItems);
+
+            // Display music items
+            musicItems.forEach(item => {
+                const isLoggedIn = localStorage.getItem('userToken') ? true : false;
+                const genres = Array.isArray(item.genres) ? item.genres : [];
+                const featuredArtists = Array.isArray(item.featuredArtists) ? item.featuredArtists : [];
+
+                const musicCard = document.createElement('div');
+                musicCard.className = 'col-md-6 col-lg-4 mb-4';
+                musicCard.innerHTML = `
+                    <div class="card music-card">
+                        <div class="container_img" ${!isLoggedIn ? 'onclick="showLoginMessage(event)"' : ''}>
+                            <img src="${item.coverImage || '/img/default-music.jpg'}" class="card-img-top image" alt="${item.title}">
+                            <div class="play-btn" ${isLoggedIn ? `onclick="playMusic('${item.id}')"` : ''}>
+                                <i class="fas fa-play"></i>
+                            </div>
                         </div>
-                        <button class="btn btn-sm btn-outline-secondary" 
-                            ${isLoggedIn ? `onclick="playMusic('${item.id}')"` : 'onclick="showLoginMessage(event)"'}>
-                            <i class="fas fa-play"></i> Play
-                        </button>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                ${item.title}
+                                ${item.explicit ? '<span class="explicit-badge">EXPLICIT</span>' : ''}
+                            </h5>
+                            <div class="music-meta">
+                                By ${item.artist} | ${item.year}
+                                ${item.album ? ` | ${item.album}` : ''}
+                                ${featuredArtists.length > 0 ? ` | ft. ${featuredArtists.join(', ')}` : ''}
+                            </div>
+                            ${item.description ? `<p class="card-text music-description">${item.description}</p>` : ''}
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    ${genres.map(genre =>
+                                        `<span class="badge badge-pill genre-badge">${genre}</span>`
+                                    ).join('')}
+                                </div>
+                                <button class="btn btn-sm btn-outline-secondary"
+                                    ${isLoggedIn ? `onclick="playMusic('${item.id}')"` : 'onclick="showLoginMessage(event)"'}>
+                                    <i class="fas fa-play"></i> Play
+                                </button>
+                            </div>
+                            <audio id="player-${item.id}" class="audio-player" controls style="display:none;">
+                                <source src="${item.audioFile}" type="audio/mpeg">
+                            </audio>
+                        </div>
                     </div>
-                    <audio id="player-${item.id}" class="audio-player" controls style="display:none;">
-                        <source src="${item.audioFile}" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-        `;
-        
-        musicList.appendChild(musicCard);
-    });
+                `;
+
+                musicList.appendChild(musicCard);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching music:', error);
+            document.getElementById('music-list').innerHTML =
+                '<div class="col-12 text-center"><p>Failed to load music. Please try again later.</p></div>';
+        });
 }
 
         // Also update the playMusic function to work with the item ID instead of audioURL
@@ -417,7 +433,7 @@ function playMusic(itemId) {
             // Get all unique genres
             const allGenres = new Set();
             musicItems.forEach(item => {
-                item.genres.forEach(genre => allGenres.add(genre));
+                (Array.isArray(item.genres) ? item.genres : []).forEach(genre => allGenres.add(genre));
             });
             
             // Add genre options

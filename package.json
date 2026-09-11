@@ -21,5 +21,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "allowScripts": {
+    "sqlite3@5.1.7": true,
+    "bcrypt@5.1.1": true
+  }
 }
