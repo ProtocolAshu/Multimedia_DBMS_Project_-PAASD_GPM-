@@ -1,6 +1,7 @@
 // File: models/Newspaper.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database'); // Make sure this path is correct
+const { SEARCHABLE_MODEL_ATTRIBUTES } = require('../lib/searchAttributes');
 
 const Newspaper = sequelize.define('Newspaper', {
     id: {
@@ -32,6 +33,11 @@ const Newspaper = sequelize.define('Newspaper', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    publishYear: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    ...SEARCHABLE_MODEL_ATTRIBUTES, // rating, priceUSD — used by /api/search
     keywords: {
         type: DataTypes.TEXT,
         allowNull: true,

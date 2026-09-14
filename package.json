@@ -4,11 +4,16 @@
   "description": "Multimedia Store",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "vitest run",
+    "benchmark": "node scripts/benchmark-search.js"
+  },
+  "devDependencies": {
+    "supertest": "^7.0.0",
+    "vitest": "^1.6.0"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
-    "bcryptjs": "^3.0.2",
     "escape-html": "^1.0.3",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",

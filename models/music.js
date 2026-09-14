@@ -1,6 +1,7 @@
 // File: models/Music.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database');
+const { SEARCHABLE_MODEL_ATTRIBUTES } = require('../lib/searchAttributes');
 
 const Music = sequelize.define('Music', {
     id: {
@@ -47,6 +48,7 @@ const Music = sequelize.define('Music', {
     dateAdded: {
         type: DataTypes.DATE
     },
+    ...SEARCHABLE_MODEL_ATTRIBUTES, // rating, priceUSD — used by /api/search
     htmlLink: {
         type: DataTypes.STRING
     }

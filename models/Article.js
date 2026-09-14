@@ -1,6 +1,7 @@
 // File: models/Article.js (updated)
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database');
+const { SEARCHABLE_MODEL_ATTRIBUTES } = require('../lib/searchAttributes');
 
 const Article = sequelize.define('Article', {
     id: {
@@ -31,6 +32,8 @@ const Article = sequelize.define('Article', {
         type: DataTypes.TEXT('long'),
         allowNull: false
     },
+    publicationYear: DataTypes.INTEGER, // year dimension for /api/search
+    ...SEARCHABLE_MODEL_ATTRIBUTES, // rating, priceUSD — used by /api/search
     htmlLink: {
         type: DataTypes.STRING,
         allowNull: true

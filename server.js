@@ -26,7 +26,25 @@ sequelize.sync()
         const migrations = [
             { table: 'Music', column: 'htmlLink', ddl: "ALTER TABLE Music ADD COLUMN htmlLink VARCHAR(255)" },
             { table: 'books', column: 'bookPdf', ddl: "ALTER TABLE books ADD COLUMN bookPdf VARCHAR(255)" },
-            { table: 'Newspapers', column: 'htmlLink', ddl: "ALTER TABLE Newspapers ADD COLUMN htmlLink VARCHAR(255)" }
+            { table: 'Newspapers', column: 'htmlLink', ddl: "ALTER TABLE Newspapers ADD COLUMN htmlLink VARCHAR(255)" },
+            // Multi-attribute search columns (rating / priceUSD / year sources)
+            { table: 'Music', column: 'rating', ddl: "ALTER TABLE Music ADD COLUMN rating INTEGER" },
+            { table: 'Music', column: 'priceUSD', ddl: "ALTER TABLE Music ADD COLUMN priceUSD FLOAT" },
+            { table: 'Videos', column: 'rating', ddl: "ALTER TABLE Videos ADD COLUMN rating INTEGER" },
+            { table: 'Videos', column: 'priceUSD', ddl: "ALTER TABLE Videos ADD COLUMN priceUSD FLOAT" },
+            { table: 'Games', column: 'rating', ddl: "ALTER TABLE Games ADD COLUMN rating INTEGER" },
+            { table: 'Games', column: 'priceUSD', ddl: "ALTER TABLE Games ADD COLUMN priceUSD FLOAT" },
+            { table: 'books', column: 'publicationYear', ddl: "ALTER TABLE books ADD COLUMN publicationYear INTEGER" },
+            { table: 'books', column: 'rating', ddl: "ALTER TABLE books ADD COLUMN rating INTEGER" },
+            { table: 'books', column: 'priceUSD', ddl: "ALTER TABLE books ADD COLUMN priceUSD FLOAT" },
+            { table: 'Paintings', column: 'rating', ddl: "ALTER TABLE Paintings ADD COLUMN rating INTEGER" },
+            { table: 'Paintings', column: 'priceUSD', ddl: "ALTER TABLE Paintings ADD COLUMN priceUSD FLOAT" },
+            { table: 'Articles', column: 'publicationYear', ddl: "ALTER TABLE Articles ADD COLUMN publicationYear INTEGER" },
+            { table: 'Articles', column: 'rating', ddl: "ALTER TABLE Articles ADD COLUMN rating INTEGER" },
+            { table: 'Articles', column: 'priceUSD', ddl: "ALTER TABLE Articles ADD COLUMN priceUSD FLOAT" },
+            { table: 'Newspapers', column: 'publishYear', ddl: "ALTER TABLE Newspapers ADD COLUMN publishYear INTEGER" },
+            { table: 'Newspapers', column: 'rating', ddl: "ALTER TABLE Newspapers ADD COLUMN rating INTEGER" },
+            { table: 'Newspapers', column: 'priceUSD', ddl: "ALTER TABLE Newspapers ADD COLUMN priceUSD FLOAT" }
         ];
         for (const { table, column, ddl } of migrations) {
             try {
@@ -71,6 +89,9 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
+// Multi-attribute search API (k-d tree backed; see lib/kdtree.js)
+app.use('/api/search', require('./routes/search'));
 
 
 // Registration endpoint

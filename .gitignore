@@ -11,6 +11,9 @@ server.log
 # Temporary commit message file
 commit-message.txt
 
+# Refactor backup (created by scripts/refactor-server.js)
+server.js.bak
+
 # OS cruft
 .DS_Store
 Thumbs.db

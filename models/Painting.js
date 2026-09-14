@@ -1,6 +1,7 @@
 // File: models/Painting.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database');
+const { SEARCHABLE_MODEL_ATTRIBUTES } = require('../lib/searchAttributes');
 
 const Painting = sequelize.define('Painting', {
     id: {
@@ -43,6 +44,7 @@ const Painting = sequelize.define('Painting', {
     paintingDescription: {
         type: DataTypes.TEXT
     },
+    ...SEARCHABLE_MODEL_ATTRIBUTES, // rating, priceUSD — used by /api/search
     primaryVideo: {
         type: DataTypes.STRING
     },

@@ -1,6 +1,7 @@
 // File: models/Game.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database');
+const { SEARCHABLE_MODEL_ATTRIBUTES } = require('../lib/searchAttributes');
 
 const Game = sequelize.define('Game', {
     id: {
@@ -48,6 +49,7 @@ const Game = sequelize.define('Game', {
     gameLink: {
         type: DataTypes.STRING
     },
+    ...SEARCHABLE_MODEL_ATTRIBUTES, // rating, priceUSD — used by /api/search
     htmlLink: {
         type: DataTypes.STRING
     }
